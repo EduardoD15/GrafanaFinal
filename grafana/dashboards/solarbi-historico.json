@@ -1,0 +1,177 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "description": "OpenCEM historico: filas reales del archivo con is_simulated=false. La ETL agrega la energia solar estimada por dia e inversor.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "min": 0,
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT date_trunc('day', measured_at) AS \"time\", 'Inversor ' || inverter_id AS metric, sum(solar_kwh_interval) AS value FROM gold.fact_energy_reading WHERE NOT is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) GROUP BY 1, inverter_id ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Generacion solar historica OpenCEM (kWh/dia)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "description": "CO2 estimado potencialmente evitado = energia solar por el factor SIN configurado. Verifica fuente y ano del factor antes de presentar el resultado como cifra oficial.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "min": 0,
+          "unit": "masskg"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT date_trunc('day', measured_at) AS \"time\", 'Inversor ' || inverter_id AS metric, sum(co2_avoided_kg_interval) AS value FROM gold.fact_energy_reading WHERE NOT is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) GROUP BY 1, inverter_id ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "CO2 estimado evitado historico (kg/dia)",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [
+    "SolarBI",
+    "OpenCEM",
+    "historico"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "1, 2",
+          "value": [
+            "1",
+            "2"
+          ]
+        },
+        "includeAll": true,
+        "allValue": "1,2",
+        "multi": true,
+        "name": "inverter",
+        "options": [],
+        "query": "SELECT inverter_id AS __value, inverter_name AS __text FROM gold.dim_inverter ORDER BY inverter_id",
+        "refresh": 1,
+        "type": "query",
+        "datasource": {
+          "type": "postgres",
+          "uid": "solarbi-pg"
+        }
+      }
+    ]
+  },
+  "time": {
+    "from": "now-2y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "SolarBI | Historico OpenCEM",
+  "uid": "solarbi-historico",
+  "version": 1,
+  "weekStart": ""
+}

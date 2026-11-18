@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+data/bronze/*
+!data/bronze/README.md
+!data/bronze/opencem-v1.0.0-SHA256SUMS.txt
+data/silver/*
+data/gold/*
+reports/*
+!reports/.gitkeep
+PowerBI/*.pbix
+PowerBI/.pbi/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.log

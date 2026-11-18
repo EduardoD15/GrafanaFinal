@@ -1,0 +1,93 @@
+-- Marque DimFecha como tabla de fechas con calendar_date.
+Energia Solar (kWh) =
+SUM ( fact_energy_reading[solar_kwh_interval] )
+
+Energia Red Importada (kWh) =
+SUM ( fact_energy_reading[grid_kwh_interval] )
+
+Energia Salida Fase A (kWh) =
+SUM ( fact_energy_reading[load_kwh_interval] )
+
+CO2 Evitado Estimado (kg) =
+SUM ( fact_energy_reading[co2_avoided_kg_interval] )
+
+CO2 Evitado Estimado (t) =
+DIVIDE ( [CO2 Evitado Estimado (kg)], 1000 )
+
+Solar Mes Anterior (kWh) =
+CALCULATE (
+    [Energia Solar (kWh)],
+    DATEADD ( dim_date[calendar_date], -1, MONTH )
+)
+
+Variacion Solar MoM (%) =
+DIVIDE (
+    [Energia Solar (kWh)] - [Solar Mes Anterior (kWh)],
+    [Solar Mes Anterior (kWh)]
+)
+
+Costo Red (COP) =
+VAR TarifaEscenario =
+    SELECTEDVALUE ( 'Tarifa escenario'[Tarifa escenario], 1000 )
+RETURN
+    [Energia Red Importada (kWh)] * TarifaEscenario
+
+Ahorro Solar Potencial (COP) =
+VAR TarifaEscenario =
+    SELECTEDVALUE ( 'Tarifa escenario'[Tarifa escenario], 1000 )
+RETURN
+    [Energia Solar (kWh)] * TarifaEscenario
+
+Porcentaje Dependencia de Red =
+DIVIDE (
+    [Energia Red Importada (kWh)],
+    [Energia Red Importada (kWh)] + [Energia Solar (kWh)]
+)
+
+SoC Promedio (%) =
+AVERAGE ( fact_energy_reading[battery_soc_pct] )
+
+Lecturas Validas (%) =
+DIVIDE (
+    CALCULATE (
+        COUNTROWS ( silver_measurements ),
+        silver_measurements[is_valid] = TRUE (),
+        silver_measurements[is_simulated] = FALSE ()
+    ),
+    CALCULATE (
+        COUNTROWS ( silver_measurements ),
+        silver_measurements[is_simulated] = FALSE ()
+    )
+)
+
+Disponibilidad del Registro (%) =
+VAR LecturasValidas =
+    CALCULATE (
+        COUNTROWS ( silver_measurements ),
+        silver_measurements[is_valid] = TRUE (),
+        silver_measurements[is_simulated] = FALSE ()
+    )
+VAR UltimaFechaHistorica =
+    CALCULATE (
+        MAX ( silver_measurements[measurement_date] ),
+        REMOVEFILTERS ( dim_date ),
+        silver_measurements[is_valid] = TRUE (),
+        silver_measurements[is_simulated] = FALSE ()
+    )
+VAR PrimeraFechaHistorica =
+    CALCULATE (
+        MIN ( silver_measurements[measurement_date] ),
+        REMOVEFILTERS ( dim_date ),
+        silver_measurements[is_valid] = TRUE (),
+        silver_measurements[is_simulated] = FALSE ()
+    )
+VAR DiasSeleccionadosHistoricos =
+    FILTER (
+        VALUES ( dim_date[calendar_date] ),
+        dim_date[calendar_date] >= PrimeraFechaHistorica
+            && dim_date[calendar_date] <= UltimaFechaHistorica
+    )
+VAR LecturasEsperadas =
+    COUNTROWS ( DiasSeleccionadosHistoricos ) * DIVIDE ( 86400, 13 )
+RETURN
+    MIN ( 1, DIVIDE ( LecturasValidas, LecturasEsperadas ) )

@@ -1,0 +1,93 @@
+services:
+  db:
+    image: postgres:16.10-alpine3.22
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-solarbi}
+      POSTGRES_USER: ${POSTGRES_USER:-solarbi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Cree el archivo .env con .env.example}
+      TZ: UTC
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+          cpus: "2.0"
+    restart: unless-stopped
+
+  etl:
+    build: .
+    image: solarbi-etl:1.0.0
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-solarbi}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-solarbi}
+      DATASET_ARCHIVE: /data/bronze/opencem-v1.0.0.sqlite.zst
+      DATASET_SQLITE: /data/bronze/opencem-v1.0.0.sqlite
+      REPORT_PATH: /reports/etl-report.json
+      CO2_FACTOR_KG_PER_KWH: ${CO2_FACTOR_KG_PER_KWH:-0.112}
+      MAX_INTERVAL_SECONDS: ${MAX_INTERVAL_SECONDS:-300}
+    volumes:
+      - ./data/bronze:/data/bronze
+      - ./reports:/reports
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 768m
+    cpus: 1.5
+    restart: "no"
+
+  simulator:
+    image: solarbi-etl:1.0.0
+    command: ["python", "-m", "app.simulator"]
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-solarbi}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-solarbi}
+      CO2_FACTOR_KG_PER_KWH: ${CO2_FACTOR_KG_PER_KWH:-0.112}
+      SIMULATOR_INTERVAL_MS: ${SIMULATOR_INTERVAL_MS:-1000}
+    depends_on:
+      db:
+        condition: service_healthy
+      etl:
+        condition: service_completed_successfully
+    mem_limit: 128m
+    cpus: 0.5
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.2.0
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?Cree el archivo .env con .env.example}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_DATE_FORMATS_DEFAULT_TIMEZONE: browser
+      POSTGRES_HOST: db
+      POSTGRES_DB: ${POSTGRES_DB:-solarbi}
+      POSTGRES_USER: ${POSTGRES_USER:-solarbi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Cree el archivo .env con .env.example}
+    ports:
+      - "${GRAFANA_HOST_PORT:-3000}:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    mem_limit: 512m
+    cpus: 1.0
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  grafana-data:

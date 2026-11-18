@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dataset-transfer
+  namespace: solarbi
+spec:
+  restartPolicy: Never
+  containers:
+    - name: transfer
+      image: busybox:1.37.0
+      command: ["sh", "-c", "mkdir -p /data/bronze /reports && sleep 3600"]
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi
+      volumeMounts:
+        - name: bronze
+          mountPath: /data/bronze
+        - name: reports
+          mountPath: /reports
+  volumes:
+    - name: bronze
+      persistentVolumeClaim:
+        claimName: bronze-data
+    - name: reports
+      emptyDir: {}

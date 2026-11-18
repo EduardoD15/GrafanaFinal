@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: solarbi-etl
+  namespace: solarbi
+spec:
+  backoffLimit: 1
+  activeDeadlineSeconds: 7200
+  template:
+    metadata:
+      labels:
+        app: solarbi-etl
+    spec:
+      restartPolicy: Never
+      securityContext:
+        fsGroup: 10001
+      containers:
+        - name: etl
+          image: solarbi-etl:1.0.0
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: solarbi-config
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: solarbi-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: solarbi-secrets
+                  key: POSTGRES_PASSWORD
+            - name: DATABASE_URL
+              value: postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 640Mi
+          volumeMounts:
+            - name: bronze
+              mountPath: /data/bronze
+            - name: reports
+              mountPath: /reports
+      volumes:
+        - name: bronze
+          persistentVolumeClaim:
+            claimName: bronze-data
+        - name: reports
+          persistentVolumeClaim:
+            claimName: bronze-data

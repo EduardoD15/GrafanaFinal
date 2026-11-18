@@ -1,0 +1,256 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 20
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT measured_at AS \"time\", battery_soc_pct AS value, 'Inversor ' || inverter_id AS metric FROM gold.fact_energy_reading WHERE is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) ORDER BY measured_at",
+          "refId": "A"
+        }
+      ],
+      "title": "Estado de carga de bateria",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kw"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 16,
+        "x": 8,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT measured_at AS \"time\", pv_power_w / 1000.0 AS \"Solar kW\", load_power_w / 1000.0 AS \"Salida fase A kW\", grid_power_w / 1000.0 AS \"Red kW\" FROM gold.fact_energy_reading WHERE is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) ORDER BY measured_at",
+          "refId": "A"
+        }
+      ],
+      "title": "Potencia casi en tiempo real (datos simulados)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 3,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Hora UTC"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT measured_at AS \"Hora UTC\", inverter_id AS \"Inversor\", round(pv_power_w::numeric, 1) AS \"Solar W\", round(load_power_w::numeric, 1) AS \"Salida fase A W\", round(grid_power_w::numeric, 1) AS \"Red W\", round(battery_soc_pct::numeric, 1) AS \"Bateria %\" FROM gold.fact_energy_reading WHERE is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) ORDER BY measured_at DESC LIMIT 50",
+          "refId": "A"
+        }
+      ],
+      "title": "Ultimas lecturas por inversor",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 4,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Hora"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT occurred_at AS \"Hora\", inverter_id AS \"Inversor\", event_type AS \"Tipo\", severity AS \"Severidad\", context_source AS \"Origen\", metadata->>'message' AS \"Mensaje\" FROM gold.fact_event WHERE metadata->>'simulated' = 'true' AND $__timeFilter(occurred_at) AND inverter_id IN (${inverter:csv}) ORDER BY occurred_at DESC LIMIT 50",
+          "refId": "A"
+        }
+      ],
+      "title": "Alertas/eventos sinteticos recientes (demostracion)",
+      "type": "table"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 41,
+  "tags": [
+    "SolarBI",
+    "OpenCEM",
+    "microrred"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "1, 2",
+          "value": [
+            "1",
+            "2"
+          ]
+        },
+        "includeAll": true,
+        "allValue": "1,2",
+        "multi": true,
+        "name": "inverter",
+        "options": [],
+        "query": "SELECT inverter_id AS __value, inverter_name AS __text FROM gold.dim_inverter ORDER BY inverter_id",
+        "refresh": 1,
+        "type": "query",
+        "datasource": {
+          "type": "postgres",
+          "uid": "solarbi-pg"
+        }
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "SolarBI | Operacion de microrred",
+  "uid": "solarbi-operacion",
+  "version": 1,
+  "weekStart": ""
+}

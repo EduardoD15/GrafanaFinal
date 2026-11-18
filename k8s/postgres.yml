@@ -1,0 +1,135 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: solarbi
+spec:
+  clusterIP: None
+  selector:
+    app: postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-nodeport
+  namespace: solarbi
+spec:
+  type: NodePort
+  selector:
+    app: postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+      nodePort: 30432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: solarbi
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16.10-alpine3.22
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: solarbi-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: solarbi-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: solarbi-secrets
+                  key: POSTGRES_PASSWORD
+            - name: TZ
+              value: UTC
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 1280Mi
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+            - name: schema
+              mountPath: /docker-entrypoint-initdb.d/001-schema.sql
+              subPath: schema.sql
+              readOnly: true
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
+        - name: schema
+          configMap:
+            name: postgres-schema
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-schema
+  namespace: solarbi
+data:
+  schema.sql: |
+    CREATE SCHEMA IF NOT EXISTS bronze;
+    CREATE SCHEMA IF NOT EXISTS silver;
+    CREATE SCHEMA IF NOT EXISTS gold;
+    CREATE TABLE IF NOT EXISTS bronze.measurements_raw (read_ts DOUBLE PRECISION NOT NULL, inverter SMALLINT NOT NULL, payload JSONB NOT NULL, is_simulated BOOLEAN NOT NULL DEFAULT FALSE, ingested_at TIMESTAMPTZ NOT NULL DEFAULT now(), PRIMARY KEY (read_ts, inverter));
+    CREATE TABLE IF NOT EXISTS bronze.context_raw (id BIGINT PRIMARY KEY, recorded DOUBLE PRECISION, starts DOUBLE PRECISION, ends DOUBLE PRECISION, metadata JSONB NOT NULL DEFAULT '{}'::jsonb, ingested_at TIMESTAMPTZ NOT NULL DEFAULT now());
+    CREATE TABLE IF NOT EXISTS silver.measurements (read_ts DOUBLE PRECISION NOT NULL, inverter SMALLINT NOT NULL, measured_at TIMESTAMPTZ, measurement_date DATE, pv_power_w DOUBLE PRECISION, load_power_w DOUBLE PRECISION, grid_power_w DOUBLE PRECISION, battery_soc_pct DOUBLE PRECISION, battery_voltage_v DOUBLE PRECISION, battery_current_a DOUBLE PRECISION, is_valid BOOLEAN NOT NULL, invalid_reason TEXT, is_simulated BOOLEAN NOT NULL DEFAULT FALSE, PRIMARY KEY (read_ts, inverter));
+    CREATE INDEX IF NOT EXISTS idx_silver_valid_time ON silver.measurements (measured_at, inverter) WHERE is_valid;
+    CREATE TABLE IF NOT EXISTS silver.context (id BIGINT PRIMARY KEY, recorded TIMESTAMPTZ NOT NULL, starts TIMESTAMPTZ, ends TIMESTAMPTZ, metadata JSONB NOT NULL DEFAULT '{}'::jsonb);
+    CREATE TABLE IF NOT EXISTS gold.dim_date (date_key INTEGER PRIMARY KEY, calendar_date DATE NOT NULL UNIQUE, year SMALLINT NOT NULL, quarter SMALLINT NOT NULL, month SMALLINT NOT NULL, day SMALLINT NOT NULL, day_of_week SMALLINT NOT NULL);
+    CREATE TABLE IF NOT EXISTS gold.dim_time (time_key SMALLINT PRIMARY KEY, hour SMALLINT NOT NULL, minute SMALLINT NOT NULL, quarter_hour SMALLINT NOT NULL, time_label TEXT NOT NULL);
+    INSERT INTO gold.dim_time (time_key, hour, minute, quarter_hour, time_label) SELECT minute_of_day, minute_of_day / 60, minute_of_day % 60, minute_of_day / 15, lpad((minute_of_day / 60)::text, 2, '0') || ':' || lpad((minute_of_day % 60)::text, 2, '0') FROM generate_series(0, 1439) AS minute_of_day ON CONFLICT (time_key) DO NOTHING;
+    CREATE TABLE IF NOT EXISTS gold.dim_inverter (inverter_id SMALLINT PRIMARY KEY, inverter_name TEXT NOT NULL, rated_power_kw NUMERIC(8,3) NOT NULL, pv_capacity_kwp NUMERIC(8,3) NOT NULL, source_system TEXT NOT NULL, valid_from DATE NOT NULL DEFAULT DATE '2025-01-01', valid_to DATE, is_current BOOLEAN NOT NULL DEFAULT TRUE);
+    CREATE TABLE IF NOT EXISTS gold.fact_energy_reading (measured_at TIMESTAMPTZ NOT NULL, date_key INTEGER NOT NULL REFERENCES gold.dim_date(date_key), time_key SMALLINT NOT NULL REFERENCES gold.dim_time(time_key), inverter_id SMALLINT NOT NULL REFERENCES gold.dim_inverter(inverter_id), pv_power_w DOUBLE PRECISION, load_power_w DOUBLE PRECISION, grid_power_w DOUBLE PRECISION, battery_soc_pct DOUBLE PRECISION, solar_kwh_interval DOUBLE PRECISION, load_kwh_interval DOUBLE PRECISION, grid_kwh_interval DOUBLE PRECISION, co2_avoided_kg_interval DOUBLE PRECISION, emission_factor_kg_kwh DOUBLE PRECISION NOT NULL, is_simulated BOOLEAN NOT NULL DEFAULT FALSE, PRIMARY KEY (measured_at, inverter_id));
+    CREATE INDEX IF NOT EXISTS idx_fact_date_inverter ON gold.fact_energy_reading (date_key, inverter_id);
+    CREATE INDEX IF NOT EXISTS idx_fact_inverter_time ON gold.fact_energy_reading (inverter_id, measured_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_fact_simulated_time ON gold.fact_energy_reading (measured_at DESC) WHERE is_simulated;
+    CREATE TABLE IF NOT EXISTS gold.fact_event (event_id TEXT PRIMARY KEY, occurred_at TIMESTAMPTZ NOT NULL, date_key INTEGER NOT NULL REFERENCES gold.dim_date(date_key), time_key SMALLINT NOT NULL REFERENCES gold.dim_time(time_key), inverter_id SMALLINT REFERENCES gold.dim_inverter(inverter_id), event_type TEXT NOT NULL, severity TEXT NOT NULL, context_source TEXT, metadata JSONB NOT NULL DEFAULT '{}'::jsonb);
+    CREATE INDEX IF NOT EXISTS idx_event_time_type ON gold.fact_event (occurred_at DESC, event_type);
+    CREATE INDEX IF NOT EXISTS idx_event_metadata_gin ON gold.fact_event USING GIN (metadata);

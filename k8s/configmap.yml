@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: solarbi-config
+  namespace: solarbi
+data:
+  POSTGRES_DB: solarbi
+  POSTGRES_USER: solarbi
+  CO2_FACTOR_KG_PER_KWH: "0.112"
+  TARIFF_COP_PER_KWH: "1000"
+  MAX_INTERVAL_SECONDS: "300"
+  SIMULATOR_INTERVAL_MS: "1000"
+  DATASET_ARCHIVE: /data/bronze/opencem-v1.0.0.sqlite.zst
+  DATASET_SQLITE: /data/bronze/opencem-v1.0.0.sqlite
+  REPORT_PATH: /reports/etl-report.json

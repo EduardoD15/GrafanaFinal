@@ -1,0 +1,15 @@
+.git
+.env
+.env.*
+!.env.example
+__pycache__
+*.py[cod]
+tests
+docs
+PowerBI
+grafana
+k8s
+data
+reports
+*.sqlite
+*.sqlite.zst
