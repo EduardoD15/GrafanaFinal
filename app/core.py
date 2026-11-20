@@ -2,13 +2,33 @@ from __future__ import annotations
 
 import json
 import math
+import os
 from collections.abc import Mapping
 from typing import Any
 
 
 MIN_SOURCE_EPOCH = 946_684_800
 MAX_SOURCE_EPOCH = 4_102_444_800
-ALLOWED_CONTEXT_KEYS = ("inverter", "source", "device", "task_type")
+
+# El sitio de OpenCEM esta en Longgang, Shenzhen (Asia/Shanghai, UTC+8 sin horario de verano).
+# Las marcas de la fuente son UTC; los dias y las horas del modelo son del sitio.
+SITE_UTC_OFFSET_HOURS = int(os.getenv("SITE_UTC_OFFSET_HOURS", "8"))
+
+# Solo categorias; el texto libre (descripciones, comandos, rutas, proyectos) no pasa a la base.
+ALLOWED_CONTEXT_KEYS = (
+    "inverter",
+    "source",
+    "device",
+    "context_type",
+    "task_type",
+    "llm_estimated_task_effort",
+    "cpu_cores_active",
+    "day_type",
+    "gap_seconds",
+    "threshold_seconds",
+)
+
+KEY_CHANNELS = ("pv1power", "outw_a", "gridpowerw_a", "linepowerw_a", "battsoc", "battvolt", "battcurr")
 
 
 def _number(value: Any) -> float | None:
@@ -22,6 +42,7 @@ def _number(value: Any) -> float | None:
 
 
 def measurement_error(row: Mapping[str, Any]) -> str | None:
+    """Primera regla que rechaza la fila; el orden es el mismo que usa el SQL de Silver."""
     timestamp = _number(row.get("read_ts"))
     if timestamp is None or not MIN_SOURCE_EPOCH <= timestamp <= MAX_SOURCE_EPOCH:
         return "invalid_timestamp"
@@ -29,6 +50,9 @@ def measurement_error(row: Mapping[str, Any]) -> str | None:
     inverter = _number(row.get("inverter"))
     if inverter not in (1, 2):
         return "unsupported_inverter"
+
+    if all(_number(row.get(column)) is None for column in KEY_CHANNELS):
+        return "empty_snapshot"
 
     for column in ("pv1power", "outw_a"):
         value = _number(row.get(column))
@@ -38,6 +62,9 @@ def measurement_error(row: Mapping[str, Any]) -> str | None:
     soc = _number(row.get("battsoc"))
     if soc is not None and not 0 <= soc <= 100:
         return "invalid_battery_soc"
+
+    if _number(row.get("battvolt")) == 0:
+        return "zero_battery_voltage"
     return None
 
 
