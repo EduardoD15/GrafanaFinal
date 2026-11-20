@@ -1,0 +1,25 @@
+Huella antes de repetir el ETL (--from-bronze)
+              t              |    n    |        s         
+-----------------------------+---------+------------------
+ bronze.measurements_raw     | 2989759 |                 
+ gold.fact_energy_hour       |   14077 |      2346.609763
+ gold.fact_energy_reading    | 2934098 |      2346.609763
+ gold.fact_event             |   25294 | 547932569.102866
+ gold.fact_quality_day       |     711 |          2989759
+ silver.measurements         | 2989759 |        454695301
+ silver.measurements_validas | 2934098 |                 
+(7 filas)
+
+
+Huella despues
+              t              |    n    |        s         
+-----------------------------+---------+------------------
+ bronze.measurements_raw     | 2989759 |                 
+ gold.fact_energy_hour       |   14077 |      2346.609763
+ gold.fact_energy_reading    | 2934098 |      2346.609763
+ gold.fact_event             |   25294 | 547932569.102867
+ gold.fact_quality_day       |     711 |          2989759
+ silver.measurements         | 2989759 |        454695301
+ silver.measurements_validas | 2934098 |                 
+(7 filas)
+

@@ -1,0 +1,1716 @@
+{
+  "generated_at_utc": "2026-11-20T04:43:59.079977+00:00",
+  "source_sqlite": "opencem-v1.0.0.sqlite",
+  "source_archive": "opencem-v1.0.0.sqlite.zst",
+  "source_archive_sha256": "8e38f98209029367a3775799ee9a7c0757cc7e8f2742e4df4eccc45dd4b27517",
+  "checksum_verified_against_manifest": true,
+  "site_utc_offset_hours": 8,
+  "load_window_epoch": {
+    "from": null,
+    "to": null
+  },
+  "sqlite_inventory": [
+    {
+      "table": "analog_measurements",
+      "row_count": 2989759,
+      "columns": [
+        {
+          "name": "read_ts",
+          "type": "REAL"
+        },
+        {
+          "name": "inverter",
+          "type": "INTEGER"
+        },
+        {
+          "name": "battvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "battcurr",
+          "type": "REAL"
+        },
+        {
+          "name": "battsoc",
+          "type": "INTEGER"
+        },
+        {
+          "name": "battchgpower",
+          "type": "INTEGER"
+        },
+        {
+          "name": "linechgcurr",
+          "type": "REAL"
+        },
+        {
+          "name": "pvchgcurr",
+          "type": "REAL"
+        },
+        {
+          "name": "battreserve",
+          "type": "TEXT"
+        },
+        {
+          "name": "pv1volt",
+          "type": "REAL"
+        },
+        {
+          "name": "pv1curr",
+          "type": "REAL"
+        },
+        {
+          "name": "pv1power",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pvreserve",
+          "type": "TEXT"
+        },
+        {
+          "name": "outvolta",
+          "type": "REAL"
+        },
+        {
+          "name": "outcurra",
+          "type": "REAL"
+        },
+        {
+          "name": "outfreq",
+          "type": "REAL"
+        },
+        {
+          "name": "invcurra",
+          "type": "REAL"
+        },
+        {
+          "name": "outw_a",
+          "type": "INTEGER"
+        },
+        {
+          "name": "outva_a",
+          "type": "INTEGER"
+        },
+        {
+          "name": "loadpercenta",
+          "type": "INTEGER"
+        },
+        {
+          "name": "normalloadw_a",
+          "type": "INTEGER"
+        },
+        {
+          "name": "outsumw",
+          "type": "INTEGER"
+        },
+        {
+          "name": "outsumva",
+          "type": "INTEGER"
+        },
+        {
+          "name": "sumloadpercent",
+          "type": "INTEGER"
+        },
+        {
+          "name": "generatedpowerp_a",
+          "type": "INTEGER"
+        },
+        {
+          "name": "generatedpowers_a",
+          "type": "INTEGER"
+        },
+        {
+          "name": "generatedpowerq_a",
+          "type": "INTEGER"
+        },
+        {
+          "name": "linevolta",
+          "type": "REAL"
+        },
+        {
+          "name": "linecurra",
+          "type": "REAL"
+        },
+        {
+          "name": "linefreq",
+          "type": "REAL"
+        },
+        {
+          "name": "linepowerva_a",
+          "type": "INTEGER"
+        },
+        {
+          "name": "linepowerw_a",
+          "type": "INTEGER"
+        },
+        {
+          "name": "busvoltp",
+          "type": "REAL"
+        },
+        {
+          "name": "busvoltn",
+          "type": "REAL"
+        },
+        {
+          "name": "temper1",
+          "type": "REAL"
+        },
+        {
+          "name": "temper2",
+          "type": "REAL"
+        },
+        {
+          "name": "temper3",
+          "type": "REAL"
+        },
+        {
+          "name": "temper4",
+          "type": "REAL"
+        },
+        {
+          "name": "sir",
+          "type": "INTEGER"
+        },
+        {
+          "name": "fanduty",
+          "type": "INTEGER"
+        },
+        {
+          "name": "otherreserve",
+          "type": "TEXT"
+        },
+        {
+          "name": "gridpowerw_a",
+          "type": "INTEGER"
+        },
+        {
+          "name": "gridcurr_a",
+          "type": "REAL"
+        },
+        {
+          "name": "grid_reserve",
+          "type": "TEXT"
+        }
+      ],
+      "period": {
+        "column": "read_ts",
+        "min_epoch": 1752327095.265811,
+        "max_epoch": 1783919633.451776,
+        "min_utc": "2025-07-12T13:31:35.265811+00:00",
+        "max_utc": "2026-07-13T05:13:53.451776+00:00"
+      }
+    },
+    {
+      "table": "context",
+      "row_count": 25178,
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER"
+        },
+        {
+          "name": "recorded",
+          "type": "INTEGER"
+        },
+        {
+          "name": "start",
+          "type": "INTEGER"
+        },
+        {
+          "name": "end",
+          "type": "INTEGER"
+        },
+        {
+          "name": "value",
+          "type": "TEXT"
+        }
+      ],
+      "period": {
+        "column": "recorded",
+        "min_epoch": 1722074400,
+        "max_epoch": 1784026788,
+        "min_utc": "2024-07-27T10:00:00+00:00",
+        "max_utc": "2026-07-14T10:59:48+00:00"
+      }
+    },
+    {
+      "table": "fault_history",
+      "row_count": 2129517,
+      "columns": [
+        {
+          "name": "read_ts",
+          "type": "REAL"
+        },
+        {
+          "name": "inverter",
+          "type": "INTEGER"
+        },
+        {
+          "name": "faulthistoryrecord00",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord01",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord02",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord03",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord04",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord05",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord06",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord07",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord08",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord09",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord10",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord11",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord12",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord13",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord14",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord15",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord16",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord17",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord18",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord19",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord20",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord21",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord22",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord23",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord24",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord25",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord26",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord27",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord28",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord29",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord30",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord31",
+          "type": "TEXT"
+        },
+        {
+          "name": "faulthistoryrecord00_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord01_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord02_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord03_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord04_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord05_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord06_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord07_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord08_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord09_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord10_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord11_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord12_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord13_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord14_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord15_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord16_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord17_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord18_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord19_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord20_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord21_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord22_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord23_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord24_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord25_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord26_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord27_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord28_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord29_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord30_time",
+          "type": "REAL"
+        },
+        {
+          "name": "faulthistoryrecord31_time",
+          "type": "REAL"
+        }
+      ],
+      "period": {
+        "column": "read_ts",
+        "min_epoch": 1752327095.265811,
+        "max_epoch": 1783919633.451776,
+        "min_utc": "2025-07-12T13:31:35.265811+00:00",
+        "max_utc": "2026-07-13T05:13:53.451776+00:00"
+      }
+    },
+    {
+      "table": "settings",
+      "row_count": 2284775,
+      "columns": [
+        {
+          "name": "read_ts",
+          "type": "REAL"
+        },
+        {
+          "name": "inverter",
+          "type": "INTEGER"
+        },
+        {
+          "name": "outpriority",
+          "type": "INTEGER"
+        },
+        {
+          "name": "outvoltset",
+          "type": "REAL"
+        },
+        {
+          "name": "outfreqset",
+          "type": "REAL"
+        },
+        {
+          "name": "linerangeset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "paramodeset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ecoen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "chgpriority",
+          "type": "INTEGER"
+        },
+        {
+          "name": "maxchgcurrset",
+          "type": "REAL"
+        },
+        {
+          "name": "chgcurrbypvset",
+          "type": "REAL"
+        },
+        {
+          "name": "chgcurrbylineset",
+          "type": "REAL"
+        },
+        {
+          "name": "commidset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "muteen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ongirdset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "chgfullcurrset",
+          "type": "REAL"
+        },
+        {
+          "name": "ng_funcen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "leakagechecken",
+          "type": "INTEGER"
+        },
+        {
+          "name": "userpassword",
+          "type": "INTEGER"
+        },
+        {
+          "name": "passwordset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ctrlflag1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "battactiveset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ongridactivepowerset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ongridreactivepowerset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "hybirdpriorityen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ongridpfset",
+          "type": "REAL"
+        },
+        {
+          "name": "gridstandardset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "isodetecten",
+          "type": "INTEGER"
+        },
+        {
+          "name": "lowisovalue",
+          "type": "INTEGER"
+        },
+        {
+          "name": "maxlinepower",
+          "type": "INTEGER"
+        },
+        {
+          "name": "extctgethosten",
+          "type": "INTEGER"
+        },
+        {
+          "name": "outphasediffset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "powerturboen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "acoverlaodrestaren",
+          "type": "INTEGER"
+        },
+        {
+          "name": "gridconnectvoltmax",
+          "type": "INTEGER"
+        },
+        {
+          "name": "gridconnectvoltmin",
+          "type": "INTEGER"
+        },
+        {
+          "name": "gridconnectfreqmax",
+          "type": "REAL"
+        },
+        {
+          "name": "gridconnectfreqmin",
+          "type": "REAL"
+        },
+        {
+          "name": "gridreconnectvoltmax",
+          "type": "INTEGER"
+        },
+        {
+          "name": "gridreconnectvoltmin",
+          "type": "INTEGER"
+        },
+        {
+          "name": "gridreconnectfreqmax",
+          "type": "REAL"
+        },
+        {
+          "name": "gridreconnectfreqmin",
+          "type": "REAL"
+        },
+        {
+          "name": "gridovlevel1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "gridovdelaytime1",
+          "type": "REAL"
+        },
+        {
+          "name": "gridovlevel2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "gridovdelaytime2",
+          "type": "REAL"
+        },
+        {
+          "name": "griduvlevel1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "griduvdelaytime1",
+          "type": "REAL"
+        },
+        {
+          "name": "griduvlevel2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "griduvdelaytime2",
+          "type": "REAL"
+        },
+        {
+          "name": "ov10minprotectvalue",
+          "type": "INTEGER"
+        },
+        {
+          "name": "gridoflevel1",
+          "type": "REAL"
+        },
+        {
+          "name": "gridofdelaytime1",
+          "type": "REAL"
+        },
+        {
+          "name": "gridoflevel2",
+          "type": "REAL"
+        },
+        {
+          "name": "gridofdelaytime2",
+          "type": "REAL"
+        },
+        {
+          "name": "griduflevel1",
+          "type": "REAL"
+        },
+        {
+          "name": "gridufdelaytime1",
+          "type": "REAL"
+        },
+        {
+          "name": "griduflevel2",
+          "type": "REAL"
+        },
+        {
+          "name": "gridufdelaytime2",
+          "type": "REAL"
+        },
+        {
+          "name": "startongriddelay",
+          "type": "REAL"
+        },
+        {
+          "name": "loadingslope",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ongridreconnectdelay",
+          "type": "REAL"
+        },
+        {
+          "name": "reloadingslope",
+          "type": "INTEGER"
+        },
+        {
+          "name": "powerdynamicrate",
+          "type": "INTEGER"
+        },
+        {
+          "name": "islanden",
+          "type": "INTEGER"
+        },
+        {
+          "name": "hvrten",
+          "type": "INTEGER"
+        },
+        {
+          "name": "lvrten",
+          "type": "INTEGER"
+        },
+        {
+          "name": "constreactpoweren",
+          "type": "INTEGER"
+        },
+        {
+          "name": "constpfen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "f_pcurveen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "p_qcurveen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "u_pcurveen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "u_qcurveen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "drmen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "remoteturnoffen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "permitservice",
+          "type": "INTEGER"
+        },
+        {
+          "name": "reactpowerdynamicrate",
+          "type": "INTEGER"
+        },
+        {
+          "name": "reserve",
+          "type": "TEXT"
+        },
+        {
+          "name": "maxongridactivepower",
+          "type": "INTEGER"
+        },
+        {
+          "name": "maxlinecurr",
+          "type": "REAL"
+        },
+        {
+          "name": "smartmeterpower",
+          "type": "INTEGER"
+        },
+        {
+          "name": "battype",
+          "type": "INTEGER"
+        },
+        {
+          "name": "cvvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "floatvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "battovervolt",
+          "type": "REAL"
+        },
+        {
+          "name": "cvchgtimeset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "cvchgbackvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "inv2linevolt",
+          "type": "REAL"
+        },
+        {
+          "name": "lineback2invvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "battlowvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "battdelayoffvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "batteodvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "battdelayofftime",
+          "type": "INTEGER"
+        },
+        {
+          "name": "batteodbackvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "bmsset",
+          "type": "INTEGER"
+        },
+        {
+          "name": "bmsprotocal",
+          "type": "INTEGER"
+        },
+        {
+          "name": "batsoclowalarm",
+          "type": "INTEGER"
+        },
+        {
+          "name": "batstopsoc",
+          "type": "INTEGER"
+        },
+        {
+          "name": "battfullsoc",
+          "type": "INTEGER"
+        },
+        {
+          "name": "inv2linesoc",
+          "type": "INTEGER"
+        },
+        {
+          "name": "lineback2invsoc",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ontimechargeen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "chargestarttime1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "chargeendtime1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "chargestarttime2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "chargeendtime2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "chargestarttime3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "chargeendtime3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ontimedischgen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "dischgstarttime1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "dischgendtime1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "dischgstarttime2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "dischgendtime2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "dischgstarttime3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "dischgendtime3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "battpacknotunion",
+          "type": "INTEGER"
+        },
+        {
+          "name": "forcechgstopsoc",
+          "type": "INTEGER"
+        },
+        {
+          "name": "battpackrateah",
+          "type": "INTEGER"
+        },
+        {
+          "name": "battsetreserve",
+          "type": "TEXT"
+        },
+        {
+          "name": "fp_of_start",
+          "type": "REAL"
+        },
+        {
+          "name": "fp_uf_start",
+          "type": "REAL"
+        },
+        {
+          "name": "fp_of_end",
+          "type": "REAL"
+        },
+        {
+          "name": "fp_uf_end",
+          "type": "REAL"
+        },
+        {
+          "name": "fp_of_dropslope",
+          "type": "INTEGER"
+        },
+        {
+          "name": "fp_uf_lodingslope",
+          "type": "INTEGER"
+        },
+        {
+          "name": "fp_actpowerresptr",
+          "type": "REAL"
+        },
+        {
+          "name": "pq_p1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_q1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_p2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_q2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_p3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_q3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_p1n",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_q1n",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_p2n",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_q2n",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_p3n",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_q3n",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_enablevolt",
+          "type": "INTEGER"
+        },
+        {
+          "name": "pq_disablevolt",
+          "type": "INTEGER"
+        },
+        {
+          "name": "up_v1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "up_p1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "up_v2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "up_p2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "up_actpowerresptr",
+          "type": "REAL"
+        },
+        {
+          "name": "up_v3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "up_p3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "up_v4",
+          "type": "INTEGER"
+        },
+        {
+          "name": "up_p4",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_vref",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_v1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_q1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_v2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_q2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_v3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_q3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_v4",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_q4",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_reactpowerresptr",
+          "type": "REAL"
+        },
+        {
+          "name": "uq_vrefautoen",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_vrefresptr",
+          "type": "REAL"
+        },
+        {
+          "name": "uq_enablepower",
+          "type": "INTEGER"
+        },
+        {
+          "name": "uq_disablepower",
+          "type": "INTEGER"
+        },
+        {
+          "name": "hvrt_level1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "hvrt_level1time",
+          "type": "REAL"
+        },
+        {
+          "name": "hvrt_level2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "hvrt_level2time",
+          "type": "REAL"
+        },
+        {
+          "name": "hvrt_level3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "hvrt_level3time",
+          "type": "REAL"
+        },
+        {
+          "name": "lvrt_level1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "lvrt_level1time",
+          "type": "REAL"
+        },
+        {
+          "name": "lvrt_level2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "lvrt_level2time",
+          "type": "REAL"
+        },
+        {
+          "name": "lvrt_level3",
+          "type": "INTEGER"
+        },
+        {
+          "name": "lvrt_level3time",
+          "type": "REAL"
+        },
+        {
+          "name": "presenttime",
+          "type": "REAL"
+        }
+      ],
+      "period": {
+        "column": "read_ts",
+        "min_epoch": 1752327095.265811,
+        "max_epoch": 1783919633.451776,
+        "min_utc": "2025-07-12T13:31:35.265811+00:00",
+        "max_utc": "2026-07-13T05:13:53.451776+00:00"
+      }
+    },
+    {
+      "table": "specs",
+      "row_count": 1333174,
+      "columns": [
+        {
+          "name": "read_ts",
+          "type": "REAL"
+        },
+        {
+          "name": "inverter",
+          "type": "INTEGER"
+        },
+        {
+          "name": "machcode",
+          "type": "INTEGER"
+        },
+        {
+          "name": "producttype",
+          "type": "INTEGER"
+        },
+        {
+          "name": "manufacturename",
+          "type": "TEXT"
+        },
+        {
+          "name": "sourcesn",
+          "type": "TEXT"
+        },
+        {
+          "name": "hwver_m1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "hwver_m2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "hwver_s1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "hwver_s2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "protocolver",
+          "type": "INTEGER"
+        },
+        {
+          "name": "bmsver",
+          "type": "INTEGER"
+        },
+        {
+          "name": "libver",
+          "type": "TEXT"
+        },
+        {
+          "name": "cpubuidtime",
+          "type": "TEXT"
+        },
+        {
+          "name": "customsn",
+          "type": "TEXT"
+        },
+        {
+          "name": "prdreserve",
+          "type": "TEXT"
+        }
+      ],
+      "period": {
+        "column": "read_ts",
+        "min_epoch": 1752327095.265811,
+        "max_epoch": 1770057630.734813,
+        "min_utc": "2025-07-12T13:31:35.265811+00:00",
+        "max_utc": "2026-02-02T18:40:30.734813+00:00"
+      }
+    },
+    {
+      "table": "statistics",
+      "row_count": 2285904,
+      "columns": [
+        {
+          "name": "read_ts",
+          "type": "REAL"
+        },
+        {
+          "name": "inverter",
+          "type": "INTEGER"
+        },
+        {
+          "name": "batchgenergylast7day",
+          "type": "TEXT"
+        },
+        {
+          "name": "batdischgenergylast7day",
+          "type": "TEXT"
+        },
+        {
+          "name": "linechgenergylast7day",
+          "type": "TEXT"
+        },
+        {
+          "name": "loadconsumlast7day",
+          "type": "TEXT"
+        },
+        {
+          "name": "loadconsumfromlinelast7day",
+          "type": "TEXT"
+        },
+        {
+          "name": "energyreserved0",
+          "type": "TEXT"
+        },
+        {
+          "name": "generatedacpowertoday",
+          "type": "REAL"
+        },
+        {
+          "name": "batchgenergytoday",
+          "type": "REAL"
+        },
+        {
+          "name": "batdischgenergytoday",
+          "type": "REAL"
+        },
+        {
+          "name": "pvgeneratenergytoday",
+          "type": "REAL"
+        },
+        {
+          "name": "usedenergytoday",
+          "type": "REAL"
+        },
+        {
+          "name": "workdaystotal",
+          "type": "INTEGER"
+        },
+        {
+          "name": "batchgenergytotal",
+          "type": "TEXT"
+        },
+        {
+          "name": "batdischgenergytotal",
+          "type": "TEXT"
+        },
+        {
+          "name": "pvgeneratenergytotal",
+          "type": "TEXT"
+        },
+        {
+          "name": "usedenergytotal",
+          "type": "TEXT"
+        },
+        {
+          "name": "linechgenergytday",
+          "type": "REAL"
+        },
+        {
+          "name": "loadconsumlinetday",
+          "type": "REAL"
+        },
+        {
+          "name": "invworktimetoday",
+          "type": "INTEGER"
+        },
+        {
+          "name": "lineworktimetoday",
+          "type": "INTEGER"
+        },
+        {
+          "name": "linechgenergytotal",
+          "type": "TEXT"
+        },
+        {
+          "name": "loadconsumlinetotal",
+          "type": "TEXT"
+        },
+        {
+          "name": "invworktimetotal",
+          "type": "INTEGER"
+        },
+        {
+          "name": "lineworktimetotal",
+          "type": "INTEGER"
+        },
+        {
+          "name": "generatedacpowertotal",
+          "type": "TEXT"
+        },
+        {
+          "name": "energyreserved2",
+          "type": "REAL"
+        },
+        {
+          "name": "energyreserved1",
+          "type": "TEXT"
+        },
+        {
+          "name": "powerontime",
+          "type": "REAL"
+        },
+        {
+          "name": "stactimeback",
+          "type": "REAL"
+        }
+      ],
+      "period": {
+        "column": "read_ts",
+        "min_epoch": 1752327095.265811,
+        "max_epoch": 1783919633.451776,
+        "min_utc": "2025-07-12T13:31:35.265811+00:00",
+        "max_utc": "2026-07-13T05:13:53.451776+00:00"
+      }
+    },
+    {
+      "table": "status",
+      "row_count": 2240052,
+      "columns": [
+        {
+          "name": "read_ts",
+          "type": "REAL"
+        },
+        {
+          "name": "inverter",
+          "type": "INTEGER"
+        },
+        {
+          "name": "startupstatus",
+          "type": "INTEGER"
+        },
+        {
+          "name": "outstatus",
+          "type": "INTEGER"
+        },
+        {
+          "name": "chgstatus",
+          "type": "INTEGER"
+        },
+        {
+          "name": "paramode",
+          "type": "INTEGER"
+        },
+        {
+          "name": "ecomode",
+          "type": "INTEGER"
+        },
+        {
+          "name": "battselfcheck",
+          "type": "INTEGER"
+        },
+        {
+          "name": "drycontact1",
+          "type": "INTEGER"
+        },
+        {
+          "name": "drycontact2",
+          "type": "INTEGER"
+        },
+        {
+          "name": "passwordstatus",
+          "type": "INTEGER"
+        },
+        {
+          "name": "sysstateflag",
+          "type": "TEXT"
+        },
+        {
+          "name": "sysalarmflag",
+          "type": "TEXT"
+        },
+        {
+          "name": "deroperationstate",
+          "type": "INTEGER"
+        },
+        {
+          "name": "derconnectstate",
+          "type": "INTEGER"
+        },
+        {
+          "name": "deralarmstatus",
+          "type": "INTEGER"
+        },
+        {
+          "name": "derinverterstate",
+          "type": "INTEGER"
+        },
+        {
+          "name": "derbattstate",
+          "type": "INTEGER"
+        },
+        {
+          "name": "remotectrlstatus",
+          "type": "INTEGER"
+        },
+        {
+          "name": "statusreserve",
+          "type": "TEXT"
+        }
+      ],
+      "period": {
+        "column": "read_ts",
+        "min_epoch": 1752327095.265811,
+        "max_epoch": 1783919633.451776,
+        "min_utc": "2025-07-12T13:31:35.265811+00:00",
+        "max_utc": "2026-07-13T05:13:53.451776+00:00"
+      }
+    },
+    {
+      "table": "totals",
+      "row_count": 2279918,
+      "columns": [
+        {
+          "name": "read_ts",
+          "type": "REAL"
+        },
+        {
+          "name": "inverter",
+          "type": "INTEGER"
+        },
+        {
+          "name": "alarmdetail",
+          "type": "TEXT"
+        },
+        {
+          "name": "bmsreqchgvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "bmsreqeodvolt",
+          "type": "REAL"
+        },
+        {
+          "name": "bmsreqchgcurr",
+          "type": "REAL"
+        },
+        {
+          "name": "bmsreqdischgcurr",
+          "type": "REAL"
+        },
+        {
+          "name": "bmsreserve",
+          "type": "TEXT"
+        },
+        {
+          "name": "battsumpower",
+          "type": "REAL"
+        },
+        {
+          "name": "sys_battreserve",
+          "type": "TEXT"
+        },
+        {
+          "name": "extpvsumoutw_a",
+          "type": "REAL"
+        },
+        {
+          "name": "sys_pvreserve",
+          "type": "TEXT"
+        },
+        {
+          "name": "backupsumoutw_a",
+          "type": "REAL"
+        },
+        {
+          "name": "backupsumoutva_a",
+          "type": "REAL"
+        },
+        {
+          "name": "normalsumloadw_a",
+          "type": "REAL"
+        },
+        {
+          "name": "normalsumloadva_a",
+          "type": "REAL"
+        },
+        {
+          "name": "generatedsumpowerp_a",
+          "type": "REAL"
+        },
+        {
+          "name": "generatedsumpowers_a",
+          "type": "REAL"
+        },
+        {
+          "name": "sys_outreserve",
+          "type": "TEXT"
+        },
+        {
+          "name": "linesumpowerw_a",
+          "type": "REAL"
+        },
+        {
+          "name": "sys_linereserve",
+          "type": "TEXT"
+        }
+      ],
+      "period": {
+        "column": "read_ts",
+        "min_epoch": 1752327095.265811,
+        "max_epoch": 1783919633.451776,
+        "min_utc": "2025-07-12T13:31:35.265811+00:00",
+        "max_utc": "2026-07-13T05:13:53.451776+00:00"
+      }
+    }
+  ],
+  "source_measurements_before_rules": 2989759,
+  "quality_rejections_by_first_rule": {
+    "empty_snapshot": 55658,
+    "zero_battery_voltage": 3
+  },
+  "quality_counts_by_sequential_rule": [
+    {
+      "rule": "invalid_timestamp",
+      "before": 2989759,
+      "rejected": 0,
+      "after": 2989759
+    },
+    {
+      "rule": "unsupported_inverter",
+      "before": 2989759,
+      "rejected": 0,
+      "after": 2989759
+    },
+    {
+      "rule": "empty_snapshot",
+      "before": 2989759,
+      "rejected": 55658,
+      "after": 2934101
+    },
+    {
+      "rule": "negative_pv1power",
+      "before": 2934101,
+      "rejected": 0,
+      "after": 2934101
+    },
+    {
+      "rule": "negative_outw_a",
+      "before": 2934101,
+      "rejected": 0,
+      "after": 2934101
+    },
+    {
+      "rule": "invalid_battery_soc",
+      "before": 2934101,
+      "rejected": 0,
+      "after": 2934101
+    },
+    {
+      "rule": "zero_battery_voltage",
+      "before": 2934101,
+      "rejected": 3,
+      "after": 2934098
+    }
+  ],
+  "measurements_after_all_rules": 2934098,
+  "context_before_timestamp_rule": 25178,
+  "context_after_timestamp_rule": 25178,
+  "reconciliation": {
+    "bronze_measurements": 2989759,
+    "silver_valid_measurements": 2934098,
+    "silver_rejected_measurements": 55661,
+    "gold_historical_readings": 2934098,
+    "bronze_context": 25178,
+    "silver_context": 25178,
+    "gold_context_events": 25178,
+    "gold_hour_readings_sum": 2934098,
+    "gold_quality_rows_received_sum": 2989759,
+    "gold_hour_rows": 14077,
+    "gold_quality_day_rows": 711,
+    "gold_derived_events": 116
+  },
+  "energy_totals_kwh_kg": {
+    "solar_reading": 2346.6097625832153,
+    "solar_hour": 2346.6097625832303,
+    "grid_import_reading": 4734.4396580627745,
+    "grid_import_hour": 4734.439658062697,
+    "co2_reading": 516.2541477683133,
+    "co2_hour": 516.2541477683121
+  },
+  "idempotency_key": "read_ts + inverter; context id",
+  "energy_integration": "trapezoidal; intervals over MAX_INTERVAL_SECONDS excluded",
+  "privacy": "context free text is discarded; only an explicit metadata allowlist is retained",
+  "warnings": [
+    "Solar generation is the PV1 channel; the plant total and curtailed energy are not observed.",
+    "Grid import uses linepowerw_a (grid active power); gridpowerw_a is kept but not used.",
+    "CO2 avoided uses the configurable SIN factor and must be cited for the selected year."
+  ]
+}

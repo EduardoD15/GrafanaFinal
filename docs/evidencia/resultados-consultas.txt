@@ -1,0 +1,129 @@
+## -- 1. Energia diaria por inversor (dia local del sitio) y CO2 evitado estimado  (603 filas)
+calendar_date | inverter_id | solar_kwh | salida_kwh | red_kwh | co2_kg
+2025-07-12 | 1 | 0.00 | 0.18 | 0.00 | 0.00
+2025-07-13 | 1 | 1.60 | 1.52 | 0.00 | 0.35
+2025-07-14 | 1 | 0.22 | 0.87 | 0.00 | 0.05
+2025-07-14 | 2 | 1.51 | 8.43 | 9.62 | 0.33
+2025-07-15 | 1 | 1.58 | 1.37 | 0.00 | 0.35
+2025-07-15 | 2 | 4.18 | 15.55 | 17.97 | 0.92
+2025-07-16 | 1 | 1.70 | 1.39 | 0.00 | 0.37
+2025-07-16 | 2 | 4.20 | 17.61 | 18.23 | 0.92
+
+## -- 2. Promedio movil de siete dias de la energia solar  (603 filas)
+calendar_date | inverter_id | solar_kwh | promedio_7_dias
+2025-07-12 | 1 | 0.00 | 0.00
+2025-07-13 | 1 | 1.60 | 0.80
+2025-07-14 | 1 | 0.22 | 0.61
+2025-07-15 | 1 | 1.58 | 0.85
+2025-07-16 | 1 | 1.70 | 1.02
+2025-07-17 | 1 | 1.27 | 1.06
+2025-07-18 | 1 | 1.12 | 1.07
+2025-07-19 | 1 | 3.19 | 1.53
+
+## -- 3. Comparativo mensual contra el mes anterior (LAG)  (25 filas)
+year_month | inverter_id | solar_kwh | solar_mes_anterior | variacion_pct | red_kwh
+2025-07 | 1 | 55.6 |  |  | 0.0
+2025-08 | 1 | 13.9 | 55.6 | -75.1 | 12.7
+2025-09 | 1 | 24.8 | 13.9 | 79.2 | 100.4
+2025-10 | 1 | 38.1 | 24.8 | 53.5 | 137.4
+2025-11 | 1 | 46.8 | 38.1 | 22.7 | 159.9
+2025-12 | 1 | 67.5 | 46.8 | 44.3 | 227.3
+2026-01 | 1 | 82.9 | 67.5 | 22.8 | 229.3
+2026-02 | 1 | 79.0 | 82.9 | -4.7 | 187.2
+
+## -- 4. Los cinco dias con mas energia solar de cada inversor (RANK)  (10 filas)
+inverter_id | puesto | calendar_date | solar_kwh
+1 | 1 | 2026-06-07 | 12.62
+1 | 2 | 2026-06-19 | 11.85
+1 | 3 | 2026-06-12 | 10.33
+1 | 4 | 2026-06-03 | 8.53
+1 | 5 | 2026-05-14 | 8.42
+2 | 1 | 2026-04-01 | 13.60
+2 | 2 | 2026-02-14 | 13.09
+2 | 3 | 2026-03-20 | 12.96
+
+## -- 5. Perfil horario: a que horas llega el sol y a que horas se compra a la red (hora local)  (24 filas)
+hora_local | solar_kwh_por_hora | red_kwh_por_hora | dependencia_red_pct
+0 | 0.000 | 0.548 | 100.0
+1 | 0.000 | 0.529 | 100.0
+2 | 0.000 | 0.515 | 100.0
+3 | 0.000 | 0.510 | 100.0
+4 | 0.000 | 0.501 | 100.0
+5 | 0.000 | 0.475 | 100.0
+6 | 0.013 | 0.365 | 96.6
+7 | 0.110 | 0.259 | 70.2
+
+## -- 6. CO2 evitado acumulado en el periodo (suma acumulada)  (336 filas)
+calendar_date | co2_dia_kg | co2_acumulado_kg
+2025-07-12 | 0.00 | 0.0
+2025-07-13 | 0.35 | 0.4
+2025-07-14 | 0.38 | 0.7
+2025-07-15 | 1.27 | 2.0
+2025-07-16 | 1.30 | 3.3
+2025-07-17 | 1.28 | 4.6
+2025-07-18 | 0.50 | 5.1
+2025-07-19 | 2.27 | 7.3
+
+## -- 7. Distribucion del estado de carga por inversor (base de la alerta de bateria baja)  (2 filas)
+inverter_id | p01 | p05 | mediana | pct_lecturas_bajo_20
+1 | 35.0 | 71.0 | 96.0 | 0.23
+2 | 13.0 | 25.0 | 92.0 | 3.11
+
+## -- 8. Disponibilidad del registro por mes (tiempo cubierto por lecturas continuas)  (25 filas)
+year_month | inverter_id | disponibilidad_pct | huecos_mayores_al_limite | hueco_maximo_horas
+2025-07 | 1 | 91.53 | 7 | 21.2
+2025-07 | 2 | 93.36 | 5 | 21.2
+2025-08 | 1 | 15.56 | 1 | 628.2
+2025-08 | 2 | 15.56 | 1 | 628.2
+2025-09 | 1 | 89.92 | 1 | 72.6
+2025-09 | 2 | 89.92 | 1 | 72.6
+2025-10 | 1 | 100.00 | 0 | 0.1
+2025-10 | 2 | 100.00 | 0 | 0.1
+
+## -- 9. Lecturas rechazadas por regla de calidad (conteos antes y despues)  (5 filas)
+inverter | resultado | filas | pct_del_inversor
+1 | valida | 1610275 | 100.000
+1 | empty_snapshot | 1 | 0.000
+2 | valida | 1323823 | 95.965
+2 | empty_snapshot | 55657 | 4.035
+2 | zero_battery_voltage | 3 | 0.000
+
+## -- 10. JSON nativo: tipos de contexto mas frecuentes y su duracion media (?, ->>, @>)  (12 filas)
+tipo_contexto | registros | horas_promedio
+cpu_compilation_workload | 11974 | 0.03
+gpu_cnn_training_workload | 2955 | 0.10
+windows_update_maintenance_window | 2438 | 0.77
+battery_charging | 1058 | 2.82
+wsl_virtualization_network_activity | 1021 | 1.11
+battery_discharging | 659 | 2.38
+virtualized_disk_io_summary | 647 | 0.99
+pv_generation_active | 443 | 3.22
+
+## -- 11. JSON y ventanas: carga de salida mientras corre un entrenamiento de GPU frente al resto del tiempo  (3 filas)
+inverter_id | con_entrenamiento_gpu | horas | salida_kwh_por_hora
+1 | False | 7063 | 0.228
+1 | True | 784 | 0.326
+2 | False | 6221 | 0.663
+
+## -- 12. Episodios derivados de las lecturas: horas con la red ausente y con bateria baja por mes  (11 filas)
+year_month | inverter_id | event_type | episodios | horas
+2026-01 | 2 | low_battery_soc | 2 | 21.9
+2026-02 | 2 | low_battery_soc | 6 | 45.2
+2026-03 | 2 | low_battery_soc | 6 | 73.7
+2026-04 | 2 | grid_absent | 1 | 0.3
+2026-04 | 2 | low_battery_soc | 1 | 3.5
+2026-05 | 1 | grid_absent | 6 | 833.7
+2026-05 | 1 | low_battery_soc | 2 | 5.4
+2026-05 | 2 | grid_absent | 4 | 205.1
+
+## -- 13. Dias en que la compra a la red subio mas de 50 % frente al dia anterior (LAG)  (15 filas)
+calendar_date | red_kwh | red_dia_anterior | variacion_pct
+2026-05-02 | 14.6 | 5.5 | 165
+2025-12-17 | 21.1 | 9.0 | 136
+2025-11-24 | 19.0 | 9.9 | 92
+2025-09-26 | 17.2 | 9.0 | 90
+2025-07-15 | 18.0 | 9.6 | 87
+2025-07-29 | 23.8 | 13.6 | 75
+2026-01-07 | 28.3 | 16.3 | 73
+2026-02-12 | 33.6 | 20.1 | 67
+

@@ -1,43 +1,62 @@
-# Modelo dimensional, diccionario y lineage
+# Modelo dimensional
 
-## Eleccion y grano
+## Procesos y granos
 
-Esquema estrella en Gold: `fact_energy_reading` registra una lectura valida por inversor y timestamp UTC; las tres energias son la integral desde esa lectura hasta la siguiente del mismo inversor si el hueco no supera cinco minutos. `fact_event` tiene una fila por anotacion de contexto o por lectura con SoC bajo. Son dos procesos de negocio distintos: telemetria y eventos.
+| Hecho | Proceso | Grano | Filas | Uso |
+|---|---|---|---:|---|
+| `gold.fact_energy_reading` | Telemetría | una lectura válida por inversor y marca UTC | 2.934.098 | Detalle y alimentación del simulador; nadie lo carga en Power BI |
+| `gold.fact_energy_hour` | Telemetría resumida | inversor x hora local del sitio | 14.077 | Power BI: balance, SoC, red, CO2 |
+| `gold.fact_quality_day` | Calidad y cobertura | inversor x día local | 711 | Power BI: datos válidos y disponibilidad |
+| `gold.fact_event` | Eventos | un registro de contexto o un episodio derivado | 25.294 | Operación y análisis de contexto (JSON) |
 
-## Dimensiones y hechos
+La energía de una lectura es la integral hasta la siguiente lectura del mismo inversor, siempre que el hueco no pase de 900 s. `fact_energy_hour` suma esas energías por hora local; sus columnas son aditivas (kWh) salvo `avg_soc_pct`, `min_soc_pct` y `grid_present_ratio`, que se promedian o se toman como mínimo.
 
-| Objeto | Grano / llave | Atributos y origen |
+Power BI no necesita 3 millones de filas para un tablero mensual; una fila por hora conserva el perfil diario (amanecer, medio día, noche), que es lo que importa al negocio, y el modelo se importa en segundos.
+
+## Dimensiones
+
+| Dimensión | Llave | Atributos | Notas |
+|---|---|---|---|
+| `dim_date` | `date_key` (AAAAMMDD) | fecha, año, trimestre, mes y su nombre, `year_month`, semana ISO, día y su nombre, fin de semana, `is_historical` | Día local del sitio. `is_historical` deja fuera los días que solo existen por la simulación. |
+| `dim_time` | `time_key` (minuto 0 a 1439) | hora, minuto, cuarto de hora, etiqueta HH:MM, `day_period` | **Dimensión propia**: `day_period` agrupa las horas en amanecer (6 a 8), día (9 a 15), atardecer (16 a 18) y noche, un corte del negocio solar que la fuente no trae. |
+| `dim_inverter` | `inverter_id` | nombre, sistema de origen, vigencia (`valid_from`, `valid_to`, `is_current`), pico observado de PV1 y de salida | La capacidad nominal queda en NULL porque no está en los datos. |
+
+Las tres dimensiones son conformadas: las usan los cuatro hechos.
+
+## Matriz de bus
+
+| Proceso | `dim_date` | `dim_time` | `dim_inverter` |
+|---|:---:|:---:|:---:|
+| Lecturas (`fact_energy_reading`) | X | X | X |
+| Resumen horario (`fact_energy_hour`) | X | X (hora) | X |
+| Calidad diaria (`fact_quality_day`) | X | | X |
+| Eventos (`fact_event`) | X | X | X (puede ser NULL en contextos sin inversor) |
+
+## Modelado de eventos
+
+`fact_event` guarda dos tipos de origen distinto en una sola tabla de grano "evento":
+
+- **Registros de contexto** (25.178): vienen de la tabla `context` de la fuente. Se conservan su tipo (`context_type`, 55 valores), el inicio, el fin y la duración. El campo `metadata` (JSONB, índice GIN) guarda solo las claves de una lista permitida.
+- **Episodios derivados** (116): se detectan en las lecturas. Una racha de lecturas consecutivas con la condición (SoC < 20 %, voltaje de línea < 100 V) forma un episodio; se corta cuando el hueco entre lecturas pasa de 900 s y se exigen al menos 2 lecturas, para no registrar parpadeos de una sola muestra. Los 69 huecos de datos (`data_gap`) se registran con otra regla: cada intervalo mayor a 900 s entre dos lecturas.
+
+El evento tiene inicio, fin y duración, así que sirve para medir cuánto tiempo estuvo un inversor sin red, y no solo cuántas veces. La tabla incluye además los eventos sintéticos del simulador (`simulator`, `simulator_demo`); la vista `gold.v_event` los excluye para Power BI.
+
+## Evolución de la dimensión de inversor
+
+`dim_inverter` trae `valid_from`, `valid_to` e `is_current`. Hoy los dos inversores tienen una sola versión (tipo 1 en la práctica, porque la fuente no muestra cambios de equipo). Si aparece un cambio relevante (nueva capacidad de batería, más módulos), se cierra la fila vigente (`valid_to` = fecha del cambio, `is_current` = false) y se inserta otra con nueva clave sustituta y atributos nuevos (tipo 2). Los hechos se unen por la versión vigente en la fecha de la lectura, de modo que el histórico no se reinterpreta con la capacidad nueva. No se simula ese cambio con datos inventados.
+
+## Linaje y capas
+
+| Capa | Tabla | Contenido |
 |---|---|---|
-| `gold.dim_date` | dia; PK `date_key` YYYYMMDD | fecha, anio, trimestre, mes, dia, dia ISO; cubre lecturas UTC y fechas de contexto |
-| `gold.dim_time` | minuto del dia; PK `time_key` 0-1439 | hora, minuto, bloque 15 min; dimension construida para el taller |
-| `gold.dim_inverter` | inversor; PK `inverter_id` | 1/2, 8 kW nominal, 12.48 kWp (26 x 480 W por arreglo), fuente OpenCEM |
-| `gold.fact_energy_reading` | instante x inversor; PK `(measured_at, inverter_id)` | potencias, SoC, energia integrada, factor y CO2; Silver + parametro |
-| `gold.fact_event` | evento; PK `event_id` | anotacion o SoC bajo, severidad, metadatos minimizados; contexto JSON / Silver |
+| Bronze | `measurements_raw` | Cada lectura de la fuente con todas sus columnas en un JSONB. 2.989.759 filas, sin transformar. |
+| Bronze | `context_raw` | Contexto con metadatos filtrados (el texto libre no se guarda). |
+| Silver | `measurements` | Lecturas tipadas con `is_valid` e `invalid_reason`; conserva todo, también lo rechazado. |
+| Silver | `context` | Contexto con fechas convertidas. |
+| Gold | dimensiones y hechos arriba | Solo lecturas válidas e históricas. |
 
-`dim_inverter` empieza como SCD tipo 1. Si cambian potencia, baterias o paneles, se debe conservar la version historica con SCD tipo 2 antes de atribuir periodos a nuevas capacidades.
+Reglas de columnas, tipos y unidades: [DICCIONARIO.md](DICCIONARIO.md). Reglas de calidad y conciliación: [CALIDAD_Y_ETL.md](CALIDAD_Y_ETL.md).
 
-## Capas y lineage
+## Vistas y permisos
 
-| Campo destino | Tipo | Llave | Regla | Origen |
-|---|---|---|---|---|
-| `bronze.measurements_raw.payload` | JSONB | `(read_ts, inverter)` | copia de columnas originales del SQLite; no se altera el archivo de origen | `analog_measurements.*` |
-| `silver.measurements.measured_at` | timestamptz | `(read_ts, inverter)` | `to_timestamp(read_ts)`, UTC; epoch fuera de 2000-2100 se rechaza | `analog_measurements.read_ts` |
-| `silver.measurements.measurement_date` | date | — | fecha UTC derivada de la marca temporal; habilita relación de calidad con DimFecha en Power BI | `read_ts` |
-| `pv_power_w` | double | — | PV1; nulos se conservan; negativos se rechazan | `pv1power`, W |
-| `load_power_w` | double | — | salida fase A, no carga total | `outw_a`, W |
-| `grid_power_w` | double | — | canal A; valores negativos se interpretan como exportacion y no suman importacion | `gridpowerw_a`, W |
-| `battery_soc_pct` | double | — | solo se rechaza fuera de [0,100]; ausente no se imputa | `battsoc`, % |
-| `silver.context.metadata` | JSONB | id | lista permitida: `inverter`, `source`, `device`, `task_type`; elimina texto libre | `context.value` |
-| `solar_kwh_interval` | double | — | potencia media de dos lecturas x segundos / 3,600,000; huecos > 300 s son NULL | `pv1power` + `read_ts` |
-| `co2_avoided_kg_interval` | double | — | solar kWh x `CO2_FACTOR_KG_PER_KWH` | KPI derivado / ConfigMap |
-| `fact_event.event_type` | text | — | `context_record` o `low_battery_soc` (SoC <20%) | contexto/mediciones |
-
-Todas las horas de almacenamiento son UTC. Las marcas de simulacion se etiquetan `is_simulated=true` y se excluyen del historico analitico.
-
-## Bus matrix
-
-| Proceso | Fecha | Hora | Inversor | Evento/JSON |
-|---|---:|---:|---:|---:|
-| Lecturas / energia | X | X | X | |
-| Anotaciones de contexto | X | X | X (cuando existe) | X |
-| Alerta derivada SoC bajo | X | X | X | X |
+`gold.v_energy_hour` y `gold.v_event` convierten la hora UTC a hora local del sitio. El rol `bi_reader` (login `solarbi_reader`) solo tiene SELECT sobre el esquema `gold`: Power BI y Grafana no pueden leer Bronze ni Silver ni modificar nada.
