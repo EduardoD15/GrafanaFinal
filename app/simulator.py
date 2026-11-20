@@ -11,13 +11,18 @@ from typing import Any
 import psycopg
 from psycopg.types.json import Jsonb
 
+from app.core import SITE_UTC_OFFSET_HOURS
+
 
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "INFO"),
     format="%(asctime)sZ %(levelname)s %(message)s",
 )
 LOGGER = logging.getLogger("solarbi.simulator")
-SITE_TZ = timezone(timedelta(hours=8))
+
+# Hora a la que sale el sol en la simulacion. Por defecto la del sitio (Shenzhen); para que el
+# amanecer coincida con la hora del salon de clase se puede poner -5 (Colombia).
+DAYLIGHT_OFFSET_HOURS = float(os.getenv("SIMULATOR_DAYLIGHT_OFFSET_HOURS", str(SITE_UTC_OFFSET_HOURS)))
 
 
 def required_env(name: str) -> str:
@@ -45,45 +50,56 @@ def latest_source_values(connection: psycopg.Connection[Any]) -> dict[int, float
     return values
 
 
-def simulated_values(timestamp: float, inverter: int, rng: random.Random) -> tuple[float, float, float, float]:
-    local_time = datetime.fromtimestamp(timestamp, timezone.utc).astimezone(SITE_TZ)
+Values = tuple[float, float, float, float, float]  # solar, carga, red, SoC, bateria (W, + descarga)
+
+
+def simulated_values(timestamp: float, inverter: int, rng: random.Random) -> Values:
+    local_time = datetime.fromtimestamp(timestamp, timezone.utc) + timedelta(hours=DAYLIGHT_OFFSET_HOURS)
     daylight = max(0.0, math.sin((local_time.hour + local_time.minute / 60 - 6) * math.pi / 12))
-    solar_w = max(0.0, 6200 * daylight + rng.uniform(-120, 120))
-    load_w = max(500.0, 1600 + 300 * math.sin(timestamp / 31 + inverter) + rng.uniform(-100, 100))
-    grid_w = max(0.0, load_w - solar_w * 0.65)
-    soc = min(100.0, max(5.0, 50 + 42 * math.sin(timestamp / 150 + inverter) + rng.uniform(-0.3, 0.3)))
-    return solar_w, load_w, grid_w, soc
+    solar_w = max(0.0, 3200 * daylight * (0.9 + 0.1 * math.sin(timestamp / 97)) + rng.uniform(-40, 40))
+    load_w = max(120.0, 450 + 220 * math.sin(timestamp / 310 + inverter) + rng.uniform(-40, 40))
+    soc = min(100.0, max(5.0, 50 + 45 * math.sin(timestamp / 150 + inverter) + rng.uniform(-0.3, 0.3)))
+    battery_w = -600 * math.cos(timestamp / 150 + inverter)
+    line_w = max(0.0, load_w - solar_w * 0.9 - max(battery_w, 0.0))
+    return solar_w, load_w, line_w, soc, battery_w
 
 
 def write_tick(
     connection: psycopg.Connection[Any],
     timestamp: float,
     inverter: int,
-    values: tuple[float, float, float, float],
-    previous: dict[int, tuple[float, tuple[float, float, float, float]]],
+    values: Values,
+    previous: dict[int, tuple[float, Values]],
     emission_factor: float,
 ) -> None:
-    solar_w, load_w, grid_w, soc = values
+    solar_w, load_w, line_w, soc, battery_w = values
     measured_at = datetime.fromtimestamp(timestamp, timezone.utc)
-    date_key = int(measured_at.strftime("%Y%m%d"))
-    time_key = measured_at.hour * 60 + measured_at.minute
+    local = measured_at + timedelta(hours=SITE_UTC_OFFSET_HOURS)
+    date_key = int(local.strftime("%Y%m%d"))
+    time_key = local.hour * 60 + local.minute
     prior = previous.get(inverter)
     elapsed = timestamp - prior[0] if prior else None
+    continuous = prior is not None and elapsed is not None and 0 < elapsed <= 10
 
-    def interval_kwh(index: int, power: float) -> float | None:
-        if prior is None or elapsed is None or elapsed <= 0 or elapsed > 10:
+    def interval_kwh(index: int, power: float, clip: bool = False, sign: float = 1.0) -> float | None:
+        if not continuous:
             return None
-        return (prior[1][index] + power) * 0.5 * elapsed / 3_600_000
+        before, now = prior[1][index] * sign, power * sign
+        if clip:
+            before, now = max(before, 0.0), max(now, 0.0)
+        return (before + now) * 0.5 * elapsed / 3_600_000
 
     solar_kwh = interval_kwh(0, solar_w)
     load_kwh = interval_kwh(1, load_w)
-    grid_kwh = interval_kwh(2, grid_w)
+    grid_kwh = interval_kwh(2, line_w, clip=True)
+    discharge_kwh = interval_kwh(4, battery_w, clip=True)
+    charge_kwh = interval_kwh(4, battery_w, clip=True, sign=-1.0)
     payload = {
         "read_ts": timestamp,
         "inverter": inverter,
         "pv1power": round(solar_w, 2),
         "outw_a": round(load_w, 2),
-        "gridpowerw_a": round(grid_w, 2),
+        "linepowerw_a": round(line_w, 2),
         "battsoc": round(soc, 2),
         "simulated": True,
     }
@@ -101,50 +117,44 @@ def write_tick(
             """
             INSERT INTO silver.measurements (
                 read_ts, inverter, measured_at, measurement_date, pv_power_w, load_power_w,
-                grid_power_w, battery_soc_pct, is_valid, invalid_reason, is_simulated
-            ) VALUES (%s, %s, to_timestamp(%s), to_timestamp(%s)::date,
-                      %s, %s, %s, %s, true, NULL, true)
+                line_power_w, battery_soc_pct, battery_power_w, is_valid, invalid_reason, is_simulated
+            ) VALUES (%s, %s, to_timestamp(%s), %s, %s, %s, %s, %s, %s, true, NULL, true)
             ON CONFLICT (read_ts, inverter) DO NOTHING
             """,
-            (timestamp, inverter, timestamp, timestamp, solar_w, load_w, grid_w, soc),
+            (timestamp, inverter, timestamp, local.date(), solar_w, load_w, line_w, soc, battery_w),
         )
         connection.execute(
             """
             INSERT INTO gold.dim_date (date_key, calendar_date, year, quarter, month,
-                                       day, day_of_week)
-            VALUES (%s, %s::date, %s, %s, %s, %s, %s)
+                                       day, day_of_week, year_month, is_weekend)
+            VALUES (%s, %s::date, %s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT (date_key) DO NOTHING
             """,
             (
                 date_key,
-                measured_at.date(),
-                measured_at.year,
-                (measured_at.month - 1) // 3 + 1,
-                measured_at.month,
-                measured_at.day,
-                measured_at.isoweekday(),
+                local.date(),
+                local.year,
+                (local.month - 1) // 3 + 1,
+                local.month,
+                local.day,
+                local.isoweekday(),
+                local.strftime("%Y-%m"),
+                local.isoweekday() >= 6,
             ),
         )
         connection.execute(
             """
             INSERT INTO gold.fact_energy_reading (
-                measured_at, date_key, time_key, inverter_id, pv_power_w,
-                load_power_w, grid_power_w, battery_soc_pct, solar_kwh_interval,
-                load_kwh_interval, grid_kwh_interval, co2_avoided_kg_interval,
-                emission_factor_kg_kwh, is_simulated
+                measured_at, date_key, time_key, inverter_id, pv_power_w, load_power_w,
+                line_power_w, battery_power_w, battery_soc_pct, grid_present, interval_seconds,
+                solar_kwh_interval, load_kwh_interval, grid_import_kwh_interval,
+                battery_discharge_kwh_interval, battery_charge_kwh_interval,
+                co2_avoided_kg_interval, emission_factor_kg_kwh, is_simulated
             ) VALUES (
-                to_timestamp(%s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, true
+                to_timestamp(%s), %s, %s, %s, %s, %s, %s, %s, %s, true, %s,
+                %s, %s, %s, %s, %s, %s, %s, true
             )
-            ON CONFLICT (measured_at, inverter_id) DO UPDATE SET
-                pv_power_w = EXCLUDED.pv_power_w,
-                load_power_w = EXCLUDED.load_power_w,
-                grid_power_w = EXCLUDED.grid_power_w,
-                battery_soc_pct = EXCLUDED.battery_soc_pct,
-                solar_kwh_interval = EXCLUDED.solar_kwh_interval,
-                load_kwh_interval = EXCLUDED.load_kwh_interval,
-                grid_kwh_interval = EXCLUDED.grid_kwh_interval,
-                co2_avoided_kg_interval = EXCLUDED.co2_avoided_kg_interval,
-                emission_factor_kg_kwh = EXCLUDED.emission_factor_kg_kwh
+            ON CONFLICT (measured_at, inverter_id) DO NOTHING
             """,
             (
                 timestamp,
@@ -153,16 +163,20 @@ def write_tick(
                 inverter,
                 solar_w,
                 load_w,
-                grid_w,
+                line_w,
+                battery_w,
                 soc,
+                elapsed if continuous else None,
                 solar_kwh,
                 load_kwh,
                 grid_kwh,
+                discharge_kwh,
+                charge_kwh,
                 solar_kwh * emission_factor if solar_kwh is not None else None,
                 emission_factor,
             ),
         )
-        if soc < 20:
+        if soc < 20 and (prior is None or prior[1][3] >= 20):
             connection.execute(
                 """
                 INSERT INTO gold.fact_event (
@@ -192,16 +206,14 @@ def write_demo_alert(
     inverter: int,
     scenario: str,
 ) -> None:
-    occurred_at = datetime.fromtimestamp(timestamp, timezone.utc)
-    date_key = int(occurred_at.strftime("%Y%m%d"))
-    time_key = occurred_at.hour * 60 + occurred_at.minute
+    local = datetime.fromtimestamp(timestamp, timezone.utc) + timedelta(hours=SITE_UTC_OFFSET_HOURS)
+    date_key = int(local.strftime("%Y%m%d"))
+    time_key = local.hour * 60 + local.minute
     metadata = {
         "simulated": True,
         "demo_only": True,
         "scenario": scenario,
-        "message": (
-            "Alerta aleatoria de demostracion; no representa una falla real."
-        ),
+        "message": "Alerta aleatoria de demostracion; no representa una falla real.",
     }
     with connection.transaction():
         connection.execute(
@@ -231,7 +243,7 @@ def main() -> None:
     emission_factor = float(required_env("CO2_FACTOR_KG_PER_KWH"))
     rng = random.Random(2026)
     demo_rng = random.SystemRandom()
-    previous: dict[int, tuple[float, tuple[float, float, float, float]]] = {}
+    previous: dict[int, tuple[float, Values]] = {}
     with psycopg.connect(required_env("DATABASE_URL"), autocommit=True) as connection:
         connection.execute("SET TIME ZONE 'UTC'")
         latest_source_values(connection)
@@ -245,14 +257,7 @@ def main() -> None:
             timestamp = time.time()
             for inverter in (1, 2):
                 values = simulated_values(timestamp, inverter, rng)
-                write_tick(
-                    connection,
-                    timestamp,
-                    inverter,
-                    values,
-                    previous,
-                    emission_factor,
-                )
+                write_tick(connection, timestamp, inverter, values, previous, emission_factor)
             now = time.monotonic()
             if now >= next_demo_alert_at:
                 inverter = demo_rng.choice((1, 2))
