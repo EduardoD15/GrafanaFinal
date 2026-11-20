@@ -51,7 +51,7 @@ groups:
         for: 30s
         annotations:
           summary: "El estado de carga simulado esta por debajo del 20 %."
-          description: "Validar inversor y revisar tendencia en el tablero SolarBI."
+          description: "Umbral de 20 %: en los datos reales solo 0,23 % (inversor 1) y 3,1 % (inversor 2) de las lecturas quedan por debajo. Validar inversor y revisar la tendencia en el tablero SolarBI."
         labels:
           severity: warning
           source: solarbi
@@ -101,7 +101,7 @@ groups:
         for: 30s
         annotations:
           summary: "No hay muestras simuladas recientes."
-          description: "Comprobar el deployment del simulador y la conexion con PostgreSQL."
+          description: "El simulador escribe una lectura por segundo y por inversor; 90 s sin filas son casi cien lecturas perdidas. Comprobar el deployment del simulador y la conexion con PostgreSQL."
         labels:
           severity: critical
           source: solarbi

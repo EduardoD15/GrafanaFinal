@@ -6,9 +6,9 @@ datasources:
     type: postgres
     access: proxy
     url: ${POSTGRES_HOST}:5432
-    user: ${POSTGRES_USER}
+    user: ${BI_READER_USER}
     secureJsonData:
-      password: ${POSTGRES_PASSWORD}
+      password: ${BI_READER_PASSWORD}
     jsonData:
       database: ${POSTGRES_DB}
       sslmode: disable

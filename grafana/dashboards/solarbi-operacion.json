@@ -35,11 +35,279 @@
             "mode": "absolute",
             "steps": [
               {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 20
+              },
+              {
+                "color": "green",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Bateria %$/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT DISTINCT ON (inverter_id) 'Inversor ' || inverter_id AS \"Inversor\", round(battery_soc_pct::numeric, 1) AS \"Bateria %\" FROM gold.fact_energy_reading WHERE is_simulated AND measured_at > now() - interval '2 minutes' AND inverter_id IN (${inverter:csv}) ORDER BY inverter_id, measured_at DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Estado de carga actual",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Solar kW$/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT DISTINCT ON (inverter_id) 'Inversor ' || inverter_id AS \"Inversor\", round((pv_power_w / 1000.0)::numeric, 2) AS \"Solar kW\" FROM gold.fact_energy_reading WHERE is_simulated AND measured_at > now() - interval '2 minutes' AND inverter_id IN (${inverter:csv}) ORDER BY inverter_id, measured_at DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Solar actual (kW)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
                 "color": "green",
                 "value": null
               },
               {
+                "color": "orange",
+                "value": 1.5
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Red kW$/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT DISTINCT ON (inverter_id) 'Inversor ' || inverter_id AS \"Inversor\", round((line_power_w / 1000.0)::numeric, 2) AS \"Red kW\" FROM gold.fact_energy_reading WHERE is_simulated AND measured_at > now() - interval '2 minutes' AND inverter_id IN (${inverter:csv}) ORDER BY inverter_id, measured_at DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Red actual (kW)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          },
+          "unit": "suffix: COP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT coalesce(sum(solar_kwh_interval), 0) * ${tarifa} AS \"COP\" FROM gold.fact_energy_reading WHERE is_simulated AND measured_at > now() - interval '15 minutes' AND inverter_id IN (${inverter:csv})",
+          "refId": "A"
+        }
+      ],
+      "title": "Ahorro solar estimado, ultimos 15 min (COP)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "showPoints": "never",
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
                 "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
                 "value": 20
               }
             ]
@@ -52,23 +320,18 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 0
+        "y": 4
       },
       "id": 1,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        "showPercentChange": false,
-        "textMode": "auto"
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
       },
       "targets": [
         {
@@ -83,7 +346,7 @@
           "refId": "A"
         }
       ],
-      "title": "Estado de carga de bateria",
+      "title": "Estado de carga de bateria (%)",
       "type": "timeseries"
     },
     {
@@ -101,7 +364,7 @@
         "h": 7,
         "w": 16,
         "x": 8,
-        "y": 0
+        "y": 4
       },
       "id": 2,
       "options": {
@@ -123,7 +386,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT measured_at AS \"time\", pv_power_w / 1000.0 AS \"Solar kW\", load_power_w / 1000.0 AS \"Salida fase A kW\", grid_power_w / 1000.0 AS \"Red kW\" FROM gold.fact_energy_reading WHERE is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) ORDER BY measured_at",
+          "rawSql": "SELECT measured_at AS \"time\", pv_power_w / 1000.0 AS \"Solar kW\", load_power_w / 1000.0 AS \"Salida fase A kW\", line_power_w / 1000.0 AS \"Red kW\" FROM gold.fact_energy_reading WHERE is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) ORDER BY measured_at",
           "refId": "A"
         }
       ],
@@ -145,7 +408,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 11
       },
       "id": 3,
       "options": {
@@ -166,7 +429,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT measured_at AS \"Hora UTC\", inverter_id AS \"Inversor\", round(pv_power_w::numeric, 1) AS \"Solar W\", round(load_power_w::numeric, 1) AS \"Salida fase A W\", round(grid_power_w::numeric, 1) AS \"Red W\", round(battery_soc_pct::numeric, 1) AS \"Bateria %\" FROM gold.fact_energy_reading WHERE is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) ORDER BY measured_at DESC LIMIT 50",
+          "rawSql": "SELECT measured_at AS \"Hora UTC\", inverter_id AS \"Inversor\", round(pv_power_w::numeric, 1) AS \"Solar W\", round(load_power_w::numeric, 1) AS \"Salida fase A W\", round(line_power_w::numeric, 1) AS \"Red W\", round(battery_soc_pct::numeric, 1) AS \"Bateria %\" FROM gold.fact_energy_reading WHERE is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) ORDER BY measured_at DESC LIMIT 50",
           "refId": "A"
         }
       ],
@@ -182,7 +445,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 19
       },
       "id": 4,
       "options": {
@@ -221,6 +484,7 @@
   "templating": {
     "list": [
       {
+        "allValue": "1,2",
         "current": {
           "text": "1, 2",
           "value": [
@@ -228,18 +492,35 @@
             "2"
           ]
         },
+        "datasource": {
+          "type": "postgres",
+          "uid": "solarbi-pg"
+        },
         "includeAll": true,
-        "allValue": "1,2",
         "multi": true,
         "name": "inverter",
         "options": [],
         "query": "SELECT inverter_id AS __value, inverter_name AS __text FROM gold.dim_inverter ORDER BY inverter_id",
         "refresh": 1,
-        "type": "query",
-        "datasource": {
-          "type": "postgres",
-          "uid": "solarbi-pg"
-        }
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "790.49",
+          "value": "790.49"
+        },
+        "hide": 0,
+        "label": "Tarifa (COP/kWh)",
+        "name": "tarifa",
+        "options": [
+          {
+            "selected": true,
+            "text": "790.49",
+            "value": "790.49"
+          }
+        ],
+        "query": "790.49",
+        "type": "textbox"
       }
     ]
   },
@@ -251,6 +532,6 @@
   "timezone": "browser",
   "title": "SolarBI | Operacion de microrred",
   "uid": "solarbi-operacion",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

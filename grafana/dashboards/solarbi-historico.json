@@ -26,7 +26,262 @@
         "type": "postgres",
         "uid": "solarbi-pg"
       },
-      "description": "OpenCEM historico: filas reales del archivo con is_simulated=false. La ETL agrega la energia solar estimada por dia e inversor.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT sum(h.solar_kwh) AS \"Solar kWh\" FROM gold.fact_energy_hour AS h JOIN gold.dim_date AS d USING (date_key) WHERE $__timeFilter(d.calendar_date) AND h.inverter_id IN (${inverter:csv})",
+          "refId": "A"
+        }
+      ],
+      "title": "Energia solar (kWh)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT sum(h.grid_import_kwh) AS \"Red kWh\" FROM gold.fact_energy_hour AS h JOIN gold.dim_date AS d USING (date_key) WHERE $__timeFilter(d.calendar_date) AND h.inverter_id IN (${inverter:csv})",
+          "refId": "A"
+        }
+      ],
+      "title": "Energia importada de la red (kWh)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "masskg"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT sum(h.co2_avoided_kg) AS \"CO2 kg\" FROM gold.fact_energy_hour AS h JOIN gold.dim_date AS d USING (date_key) WHERE $__timeFilter(d.calendar_date) AND h.inverter_id IN (${inverter:csv})",
+          "refId": "A"
+        }
+      ],
+      "title": "CO2 evitado estimado (kg)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 75
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 100 * sum(h.grid_import_kwh) / nullif(sum(h.grid_import_kwh) + sum(h.solar_kwh), 0) AS \"Dependencia %\" FROM gold.fact_energy_hour AS h JOIN gold.dim_date AS d USING (date_key) WHERE $__timeFilter(d.calendar_date) AND h.inverter_id IN (${inverter:csv})",
+          "refId": "A"
+        }
+      ],
+      "title": "Dependencia de la red (%)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -47,7 +302,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 4
       },
       "id": 1,
       "options": {
@@ -69,11 +324,11 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT date_trunc('day', measured_at) AS \"time\", 'Inversor ' || inverter_id AS metric, sum(solar_kwh_interval) AS value FROM gold.fact_energy_reading WHERE NOT is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) GROUP BY 1, inverter_id ORDER BY 1",
+          "rawSql": "SELECT d.calendar_date::timestamp AS \"time\", 'Inversor ' || h.inverter_id AS metric, sum(h.solar_kwh) AS value FROM gold.fact_energy_hour AS h JOIN gold.dim_date AS d USING (date_key) WHERE $__timeFilter(d.calendar_date) AND h.inverter_id IN (${inverter:csv}) GROUP BY d.calendar_date, h.inverter_id ORDER BY 1",
           "refId": "A"
         }
       ],
-      "title": "Generacion solar historica OpenCEM (kWh/dia)",
+      "title": "Generacion solar historica, canal PV1 (kWh/dia)",
       "type": "timeseries"
     },
     {
@@ -81,7 +336,6 @@
         "type": "postgres",
         "uid": "solarbi-pg"
       },
-      "description": "CO2 estimado potencialmente evitado = energia solar por el factor SIN configurado. Verifica fuente y ano del factor antes de presentar el resultado como cifra oficial.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -102,7 +356,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 4
       },
       "id": 2,
       "options": {
@@ -124,12 +378,172 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT date_trunc('day', measured_at) AS \"time\", 'Inversor ' || inverter_id AS metric, sum(co2_avoided_kg_interval) AS value FROM gold.fact_energy_reading WHERE NOT is_simulated AND $__timeFilter(measured_at) AND inverter_id IN (${inverter:csv}) GROUP BY 1, inverter_id ORDER BY 1",
+          "rawSql": "SELECT d.calendar_date::timestamp AS \"time\", 'Inversor ' || h.inverter_id AS metric, sum(h.co2_avoided_kg) AS value FROM gold.fact_energy_hour AS h JOIN gold.dim_date AS d USING (date_key) WHERE $__timeFilter(d.calendar_date) AND h.inverter_id IN (${inverter:csv}) GROUP BY d.calendar_date, h.inverter_id ORDER BY 1",
           "refId": "A"
         }
       ],
-      "title": "CO2 estimado evitado historico (kg/dia)",
+      "title": "CO2 estimado evitado (kg/dia)",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "min": 0,
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT d.calendar_date::timestamp AS \"time\", sum(h.solar_kwh) AS \"Solar\", sum(h.load_kwh) AS \"Salida del inversor\", sum(h.grid_import_kwh) AS \"Red importada\", sum(h.battery_discharge_kwh) AS \"Bateria descarga\" FROM gold.fact_energy_hour AS h JOIN gold.dim_date AS d USING (date_key) WHERE $__timeFilter(d.calendar_date) AND h.inverter_id IN (${inverter:csv}) GROUP BY d.calendar_date ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Balance diario: solar, carga, red y bateria (kWh)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "min": 0,
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 13
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT d.calendar_date::timestamp AS \"time\", 'Inversor ' || q.inverter_id AS metric, 100 * least(1.0, q.covered_seconds / nullif(q.expected_seconds, 0)) AS value FROM gold.fact_quality_day AS q JOIN gold.dim_date AS d USING (date_key) WHERE $__timeFilter(d.calendar_date) AND q.inverter_id IN (${inverter:csv}) ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Disponibilidad del registro (% del tiempo con lecturas continuas)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "solarbi-pg"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 5,
+      "options": {
+        "barWidth": 0.8,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "orientation": "vertical",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Hora local",
+        "xTickLabelRotation": 0
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "solarbi-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT lpad(t.hour::text, 2, '0') || ':00' AS \"Hora local\", avg(h.solar_kwh) AS \"Solar promedio\", avg(h.grid_import_kwh) AS \"Red importada promedio\" FROM gold.fact_energy_hour AS h JOIN gold.dim_date AS d USING (date_key) JOIN gold.dim_time AS t USING (time_key) WHERE $__timeFilter(d.calendar_date) AND h.inverter_id IN (${inverter:csv}) GROUP BY t.hour ORDER BY t.hour",
+          "refId": "A"
+        }
+      ],
+      "title": "Perfil horario medio, hora local del sitio (kWh por hora)",
+      "type": "barchart"
     }
   ],
   "refresh": "",
@@ -142,6 +556,7 @@
   "templating": {
     "list": [
       {
+        "allValue": "1,2",
         "current": {
           "text": "1, 2",
           "value": [
@@ -149,18 +564,17 @@
             "2"
           ]
         },
+        "datasource": {
+          "type": "postgres",
+          "uid": "solarbi-pg"
+        },
         "includeAll": true,
-        "allValue": "1,2",
         "multi": true,
         "name": "inverter",
         "options": [],
         "query": "SELECT inverter_id AS __value, inverter_name AS __text FROM gold.dim_inverter ORDER BY inverter_id",
         "refresh": 1,
-        "type": "query",
-        "datasource": {
-          "type": "postgres",
-          "uid": "solarbi-pg"
-        }
+        "type": "query"
       }
     ]
   },
@@ -172,6 +586,6 @@
   "timezone": "browser",
   "title": "SolarBI | Historico OpenCEM",
   "uid": "solarbi-historico",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
