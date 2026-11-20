@@ -1,93 +1,131 @@
--- Marque DimFecha como tabla de fechas con calendar_date.
-Energia Solar (kWh) =
-SUM ( fact_energy_reading[solar_kwh_interval] )
+// Medidas de la tabla Medidas del modelo SolarBI (copia de lectura del proyecto PBIP)
 
-Energia Red Importada (kWh) =
-SUM ( fact_energy_reading[grid_kwh_interval] )
+// 01. Energía
+[Energía Solar (kWh)] =
+    SUM(fact_energy_hour[solar_kwh])
 
-Energia Salida Fase A (kWh) =
-SUM ( fact_energy_reading[load_kwh_interval] )
+[Energía Salida Inversor (kWh)] =
+    SUM(fact_energy_hour[load_kwh])
 
-CO2 Evitado Estimado (kg) =
-SUM ( fact_energy_reading[co2_avoided_kg_interval] )
+[Energía Red Importada (kWh)] =
+    SUM(fact_energy_hour[grid_import_kwh])
 
-CO2 Evitado Estimado (t) =
-DIVIDE ( [CO2 Evitado Estimado (kg)], 1000 )
+[Descarga Batería (kWh)] =
+    SUM(fact_energy_hour[battery_discharge_kwh])
 
-Solar Mes Anterior (kWh) =
-CALCULATE (
-    [Energia Solar (kWh)],
-    DATEADD ( dim_date[calendar_date], -1, MONTH )
-)
+[Carga Batería (kWh)] =
+    SUM(fact_energy_hour[battery_charge_kwh])
 
-Variacion Solar MoM (%) =
-DIVIDE (
-    [Energia Solar (kWh)] - [Solar Mes Anterior (kWh)],
-    [Solar Mes Anterior (kWh)]
-)
+[Pérdidas y Otros (kWh)] =
+    [Energía Solar (kWh)] + [Energía Red Importada (kWh)] + [Descarga Batería (kWh)] - [Carga Batería (kWh)] - [Energía Salida Inversor (kWh)]
 
-Costo Red (COP) =
-VAR TarifaEscenario =
-    SELECTEDVALUE ( 'Tarifa escenario'[Tarifa escenario], 1000 )
-RETURN
-    [Energia Red Importada (kWh)] * TarifaEscenario
+[CO2 Calculado en el ETL (kg)] =
+    SUM(fact_energy_hour[co2_avoided_kg])
 
-Ahorro Solar Potencial (COP) =
-VAR TarifaEscenario =
-    SELECTEDVALUE ( 'Tarifa escenario'[Tarifa escenario], 1000 )
-RETURN
-    [Energia Solar (kWh)] * TarifaEscenario
 
-Porcentaje Dependencia de Red =
-DIVIDE (
-    [Energia Red Importada (kWh)],
-    [Energia Red Importada (kWh)] + [Energia Solar (kWh)]
-)
+// 02. Escenarios
+[Factor CO2 Escenario (kg/kWh)] =
+    DIVIDE(SELECTEDVALUE('Factor CO2'[Factor g/kWh], 220), 1000)
 
-SoC Promedio (%) =
-AVERAGE ( fact_energy_reading[battery_soc_pct] )
+[Tarifa Escenario (COP/kWh)] =
+    SELECTEDVALUE(Tarifa[Tarifa COP/kWh], 790)
 
-Lecturas Validas (%) =
-DIVIDE (
-    CALCULATE (
-        COUNTROWS ( silver_measurements ),
-        silver_measurements[is_valid] = TRUE (),
-        silver_measurements[is_simulated] = FALSE ()
-    ),
-    CALCULATE (
-        COUNTROWS ( silver_measurements ),
-        silver_measurements[is_simulated] = FALSE ()
-    )
-)
+[Aumento de Capacidad Escenario (%)] =
+    SELECTEDVALUE('Capacidad FV'[Aumento %], 0)
 
-Disponibilidad del Registro (%) =
-VAR LecturasValidas =
-    CALCULATE (
-        COUNTROWS ( silver_measurements ),
-        silver_measurements[is_valid] = TRUE (),
-        silver_measurements[is_simulated] = FALSE ()
-    )
-VAR UltimaFechaHistorica =
-    CALCULATE (
-        MAX ( silver_measurements[measurement_date] ),
-        REMOVEFILTERS ( dim_date ),
-        silver_measurements[is_valid] = TRUE (),
-        silver_measurements[is_simulated] = FALSE ()
-    )
-VAR PrimeraFechaHistorica =
-    CALCULATE (
-        MIN ( silver_measurements[measurement_date] ),
-        REMOVEFILTERS ( dim_date ),
-        silver_measurements[is_valid] = TRUE (),
-        silver_measurements[is_simulated] = FALSE ()
-    )
-VAR DiasSeleccionadosHistoricos =
-    FILTER (
-        VALUES ( dim_date[calendar_date] ),
-        dim_date[calendar_date] >= PrimeraFechaHistorica
-            && dim_date[calendar_date] <= UltimaFechaHistorica
-    )
-VAR LecturasEsperadas =
-    COUNTROWS ( DiasSeleccionadosHistoricos ) * DIVIDE ( 86400, 13 )
-RETURN
-    MIN ( 1, DIVIDE ( LecturasValidas, LecturasEsperadas ) )
+[CO2 Evitado (kg)] =
+    [Energía Solar (kWh)] * [Factor CO2 Escenario (kg/kWh)]
+
+[CO2 Evitado (t)] =
+    DIVIDE([CO2 Evitado (kg)], 1000)
+
+[Ahorro Solar (COP)] =
+    [Energía Solar (kWh)] * [Tarifa Escenario (COP/kWh)]
+
+[Costo Red (COP)] =
+    [Energía Red Importada (kWh)] * [Tarifa Escenario (COP/kWh)]
+
+[Solar con Más Capacidad (kWh)] =
+    [Energía Solar (kWh)] * (1 + [Aumento de Capacidad Escenario (%)] / 100)
+
+[Ahorro Adicional por Capacidad (COP)] =
+    ([Solar con Más Capacidad (kWh)] - [Energía Solar (kWh)]) * [Tarifa Escenario (COP/kWh)]
+
+[CO2 Adicional por Capacidad (kg)] =
+    ([Solar con Más Capacidad (kWh)] - [Energía Solar (kWh)]) * [Factor CO2 Escenario (kg/kWh)]
+
+
+// 03. Híbrido y batería
+[Dependencia de la Red (%)] =
+    DIVIDE([Energía Red Importada (kWh)], [Energía Red Importada (kWh)] + [Energía Solar (kWh)])
+
+[Autosuficiencia (%)] =
+    IF(ISBLANK([Energía Salida Inversor (kWh)]), BLANK(), MAX(0, 1 - DIVIDE([Energía Red Importada (kWh)], [Energía Salida Inversor (kWh)])))
+
+[SoC Promedio (%)] =
+    AVERAGE(fact_energy_hour[avg_soc_pct])
+
+[SoC Mínimo (%)] =
+    MIN(fact_energy_hour[min_soc_pct])
+
+[Horas con SoC Bajo (< 20 %)] =
+    COUNTROWS(FILTER(fact_energy_hour, NOT ISBLANK(fact_energy_hour[min_soc_pct]) && fact_energy_hour[min_soc_pct] < 20))
+
+[Horas sin Red (%)] =
+    IF(ISBLANK(SUM(fact_energy_hour[readings])), BLANK(), 1 - DIVIDE(SUMX(fact_energy_hour, fact_energy_hour[grid_present_ratio] * fact_energy_hour[readings]), SUM(fact_energy_hour[readings])))
+
+
+// 04. Calidad y disponibilidad
+[Lecturas Recibidas] =
+    SUM(fact_quality_day[rows_received])
+
+[Lecturas Válidas] =
+    SUM(fact_quality_day[rows_valid])
+
+[Lecturas Vacías] =
+    SUM(fact_quality_day[rows_empty])
+
+[Datos Válidos (%)] =
+    DIVIDE([Lecturas Válidas], [Lecturas Recibidas])
+
+[Disponibilidad del Registro (%)] =
+    MIN(1, DIVIDE(SUM(fact_quality_day[covered_seconds]), SUM(fact_quality_day[expected_seconds])))
+
+[Huecos sobre el Límite] =
+    SUM(fact_quality_day[gaps_over_limit])
+
+
+// 05. Eventos
+[Episodios de Red Ausente] =
+    CALCULATE(COUNTROWS(fact_event), fact_event[event_type] = "grid_absent")
+
+[Episodios de Batería Baja] =
+    CALCULATE(COUNTROWS(fact_event), fact_event[event_type] = "low_battery_soc")
+
+[Huecos de Datos] =
+    CALCULATE(COUNTROWS(fact_event), fact_event[event_type] = "data_gap")
+
+[Registros de Contexto] =
+    CALCULATE(COUNTROWS(fact_event), fact_event[event_type] = "context_record")
+
+
+// 06. Inteligencia de tiempo
+[Solar Mes Anterior (kWh)] =
+    CALCULATE([Energía Solar (kWh)], DATEADD(dim_date[calendar_date], -1, MONTH))
+
+[Variación Solar vs Mes Anterior (%)] =
+    DIVIDE([Energía Solar (kWh)] - [Solar Mes Anterior (kWh)], [Solar Mes Anterior (kWh)])
+
+[Solar Acumulado del Año (kWh)] =
+    TOTALYTD([Energía Solar (kWh)], dim_date[calendar_date])
+
+[Solar Acumulado del Periodo (kWh)] =
+    CALCULATE([Energía Solar (kWh)], FILTER(ALL(dim_date[calendar_date]), dim_date[calendar_date] <= MAX(dim_date[calendar_date])))
+
+[Promedio Móvil 7 Días Solar (kWh)] =
+    DIVIDE(CALCULATE([Energía Solar (kWh)], DATESINPERIOD(dim_date[calendar_date], MAX(dim_date[calendar_date]), -7, DAY)), 7)
+
+
+// 07. Balance
+[Valor Balance (kWh)] =
+    SWITCH(SELECTEDVALUE(Balance[Orden]), 1, [Energía Solar (kWh)], 2, [Energía Red Importada (kWh)], 3, [Descarga Batería (kWh)], 4, -[Carga Batería (kWh)], 5, -[Pérdidas y Otros (kWh)], 6, -[Energía Salida Inversor (kWh)])

@@ -1,0 +1,72 @@
+table dim_time
+	lineageTag: a5b0e526-320b-43f8-88be-3b07662f286b
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: a5f27419-0b94-4014-ac61-93ccebe48123
+		isHidden
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: 0c56037f-d6c7-49cb-ae53-2f038b75d02a
+		summarizeBy: none
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column minute
+		dataType: int64
+		formatString: 0
+		lineageTag: a40eecb5-c134-479b-9e3b-7dd373aa881e
+		summarizeBy: none
+		sourceColumn: minute
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_label
+		dataType: string
+		lineageTag: adbafed0-b600-460c-bbdc-fd55304374b3
+		summarizeBy: none
+		sourceColumn: time_label
+		sortByColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_period
+		dataType: string
+		lineageTag: a5497863-210f-4de3-853d-82cbe0b89bcb
+		summarizeBy: none
+		sourceColumn: day_period
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Jerarquía horaria'
+		lineageTag: e1f66c3a-c910-4f89-b7fe-43eb87a9ec13
+
+		level day_period
+			lineageTag: 2341bbbe-f4e2-4a68-a505-88a5845074a1
+			column: day_period
+
+		level hour
+			lineageTag: 2f9e09c9-d828-4123-a945-e7bb290f5d0f
+			column: hour
+
+	partition dim_time = m
+		mode: import
+		source = ```
+			let
+			    Origen = PostgreSQL.Database(Servidor, BaseDeDatos),
+			    Tabla = Origen{[Schema = "gold", Item = "dim_time"]}[Data],
+			    Columnas = Table.SelectColumns(Tabla, {"time_key", "hour", "minute", "time_label", "day_period"}),
+			    Tipos = Table.TransformColumnTypes(Columnas, {{"time_key", Int64.Type}, {"hour", Int64.Type}, {"minute", Int64.Type}, {"time_label", type text}, {"day_period", type text}})
+			in
+			    Tipos
+			```
+
+	annotation PBI_ResultType = Table

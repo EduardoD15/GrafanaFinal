@@ -1,0 +1,147 @@
+table dim_date
+	lineageTag: b14ab8e9-e041-4118-991f-77c9f551abfd
+	dataCategory: Time
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 6af38f6c-159d-4a38-8a6a-03b381356bc5
+		isHidden
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column calendar_date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 22a60b44-ef5f-431c-a8fd-b92dab266981
+		isKey
+		summarizeBy: none
+		sourceColumn: calendar_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 96060250-ea3e-4f73-884c-1884c88f63d6
+		summarizeBy: none
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 63f1bbbc-697b-45cb-81f8-c04a4e564cbf
+		summarizeBy: none
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: ce918208-8520-4f0c-a606-799cced8c284
+		isHidden
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		lineageTag: f57585ce-039e-457a-a041-f10e325abdec
+		summarizeBy: none
+		sourceColumn: month_name
+		sortByColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: string
+		lineageTag: 12cc86e3-e344-41c3-a3ac-4f141b2b980e
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column iso_week
+		dataType: int64
+		formatString: 0
+		lineageTag: a5721c6a-58d6-4944-9573-e7bb0d26efa0
+		summarizeBy: none
+		sourceColumn: iso_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column day
+		dataType: int64
+		formatString: 0
+		lineageTag: f1f02f49-c500-49ab-af3e-41445a789b32
+		summarizeBy: none
+		sourceColumn: day
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week
+		dataType: int64
+		formatString: 0
+		lineageTag: 79dcbc81-82a8-4712-868c-8f90069a306f
+		isHidden
+		summarizeBy: none
+		sourceColumn: day_of_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_name
+		dataType: string
+		lineageTag: 733c6676-4dbd-4e02-aecb-9e6853e81536
+		summarizeBy: none
+		sourceColumn: day_name
+		sortByColumn: day_of_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_weekend
+		dataType: boolean
+		lineageTag: 7f60b9fa-1f12-4a78-a9f9-14845377899a
+		summarizeBy: none
+		sourceColumn: is_weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Jerarquía de fechas'
+		lineageTag: 9e5cf6e9-9255-4248-b771-f894f2e36355
+
+		level year
+			lineageTag: 975cef7a-2765-4f91-abb5-3283ce107503
+			column: year
+
+		level quarter
+			lineageTag: 9f93693f-6f00-47c4-b4fd-02f6850567c2
+			column: quarter
+
+		level month_name
+			lineageTag: 3bbb492b-9924-4b8b-b575-0c2b561f8bfe
+			column: month_name
+
+		level day
+			lineageTag: 8c1f6387-11cb-4ea7-b5fc-684aadb21095
+			column: day
+
+	partition dim_date = m
+		mode: import
+		source = ```
+			let
+			    Origen = PostgreSQL.Database(Servidor, BaseDeDatos),
+			    Tabla = Origen{[Schema = "gold", Item = "dim_date"]}[Data],
+			    Filtro = Table.SelectRows(Tabla, each [is_historical] = true),
+			    Columnas = Table.SelectColumns(Filtro, {"date_key", "calendar_date", "year", "quarter", "month", "month_name", "year_month", "iso_week", "day", "day_of_week", "day_name", "is_weekend"}),
+			    Tipos = Table.TransformColumnTypes(Columnas, {{"date_key", Int64.Type}, {"calendar_date", type date}, {"year", Int64.Type}, {"quarter", Int64.Type}, {"month", Int64.Type}, {"month_name", type text}, {"year_month", type text}, {"iso_week", Int64.Type}, {"day", Int64.Type}, {"day_of_week", Int64.Type}, {"day_name", type text}, {"is_weekend", type logical}})
+			in
+			    Tipos
+			```
+
+	annotation PBI_ResultType = Table

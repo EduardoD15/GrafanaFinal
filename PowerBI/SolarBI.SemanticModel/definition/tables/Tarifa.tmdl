@@ -1,0 +1,24 @@
+table Tarifa
+	lineageTag: 6aa8b0b5-c494-49bc-8c04-64601f500d19
+
+	column 'Tarifa COP/kWh'
+		dataType: int64
+		formatString: 0
+		lineageTag: 05306bb7-e728-4b1b-95ea-47a751a248ee
+		summarizeBy: none
+		sourceColumn: Tarifa COP/kWh
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Tarifa = m
+		mode: import
+		source = ```
+			let
+			    Origen = List.Numbers(300, 121, 10),
+			    Tabla = Table.FromList(Origen, Splitter.SplitByNothing(), {"Tarifa COP/kWh"}),
+			    Tipos = Table.TransformColumnTypes(Tabla, {{"Tarifa COP/kWh", Int64.Type}})
+			in
+			    Tipos
+			```
+
+	annotation PBI_ResultType = Table

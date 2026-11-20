@@ -1,0 +1,114 @@
+table fact_event
+	lineageTag: a02fb007-9b75-4151-b4bf-589bc79e23da
+
+	column event_id
+		dataType: string
+		lineageTag: 09bb1454-9d7a-41cb-b6d6-e11fa79b8a2e
+		isHidden
+		summarizeBy: none
+		sourceColumn: event_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column occurred_local
+		dataType: dateTime
+		formatString: dd/mm/yyyy hh:mm
+		lineageTag: 9b97d72a-50e9-4d6d-a779-082cecbc0534
+		summarizeBy: none
+		sourceColumn: occurred_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column ended_local
+		dataType: dateTime
+		formatString: dd/mm/yyyy hh:mm
+		lineageTag: 6d1675c1-7671-47fd-9814-26123733ef91
+		summarizeBy: none
+		sourceColumn: ended_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 1e93a2fb-e0df-484e-ad09-0b97faa7176f
+		isHidden
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 8052b13c-dc7e-451e-9fc8-16f4afbc11c4
+		isHidden
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column inverter_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 40676334-ec79-43be-b96a-fc60ae7078ea
+		isHidden
+		summarizeBy: none
+		sourceColumn: inverter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type
+		dataType: string
+		lineageTag: d11ad49d-f272-42ef-8ab8-bd1063989ab9
+		summarizeBy: none
+		sourceColumn: event_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column severity
+		dataType: string
+		lineageTag: b7158e9c-bc42-413d-8ec0-e2e25b37a699
+		summarizeBy: none
+		sourceColumn: severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column context_source
+		dataType: string
+		lineageTag: 480bdb8b-060e-4c8a-a0df-f7096fce4808
+		summarizeBy: none
+		sourceColumn: context_source
+
+		annotation SummarizationSetBy = Automatic
+
+	column context_type
+		dataType: string
+		lineageTag: ba24f8b8-4a20-4268-949e-cc0ab1ff38d8
+		summarizeBy: none
+		sourceColumn: context_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_seconds
+		dataType: double
+		formatString: #,0
+		lineageTag: ea75e258-ccc2-44da-84e7-0d70f5521d62
+		summarizeBy: none
+		sourceColumn: duration_seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_event = m
+		mode: import
+		source = ```
+			let
+			    Origen = PostgreSQL.Database(Servidor, BaseDeDatos),
+			    Tabla = Origen{[Schema = "gold", Item = "v_event"]}[Data],
+			    Columnas = Table.SelectColumns(Tabla, {"event_id", "occurred_local", "ended_local", "date_key", "time_key", "inverter_id", "event_type", "severity", "context_source", "context_type", "duration_seconds"}),
+			    Tipos = Table.TransformColumnTypes(Columnas, {{"event_id", type text}, {"occurred_local", type datetime}, {"ended_local", type datetime}, {"date_key", Int64.Type}, {"time_key", Int64.Type}, {"inverter_id", Int64.Type}, {"event_type", type text}, {"severity", type text}, {"context_source", type text}, {"context_type", type text}, {"duration_seconds", type number}})
+			in
+			    Tipos
+			```
+
+	annotation PBI_ResultType = Table

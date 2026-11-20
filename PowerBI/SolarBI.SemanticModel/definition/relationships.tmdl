@@ -1,0 +1,32 @@
+relationship 0b6ec6f3-9efe-4fda-9eed-fcfc3f724926
+	fromColumn: fact_energy_hour.date_key
+	toColumn: dim_date.date_key
+
+relationship 44becdce-f4d4-45ec-8be4-0e7fc07991d4
+	fromColumn: fact_energy_hour.time_key
+	toColumn: dim_time.time_key
+
+relationship 5b74c718-a2aa-416a-81f6-192bab215122
+	fromColumn: fact_energy_hour.inverter_id
+	toColumn: dim_inverter.inverter_id
+
+relationship aa220078-503d-486b-8150-4585279e6933
+	fromColumn: fact_quality_day.date_key
+	toColumn: dim_date.date_key
+
+relationship ed1ba5c8-c4ff-464e-9304-3fca9543c6c3
+	fromColumn: fact_quality_day.inverter_id
+	toColumn: dim_inverter.inverter_id
+
+relationship b093e3b4-7df2-4c58-9c56-dc87f32efa03
+	fromColumn: fact_event.date_key
+	toColumn: dim_date.date_key
+
+relationship 8bb9c912-2286-4c53-b000-e394b870e4e1
+	fromColumn: fact_event.time_key
+	toColumn: dim_time.time_key
+
+relationship 219763c5-9682-4074-b915-72d53911c9b0
+	fromColumn: fact_event.inverter_id
+	toColumn: dim_inverter.inverter_id
+

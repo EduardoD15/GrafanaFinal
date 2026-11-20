@@ -1,0 +1,108 @@
+table fact_quality_day
+	lineageTag: a55c9c8e-2f7c-4cc7-8d64-a752b8ec796e
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 5044df5c-81b2-499e-9b37-ca07a14d59fc
+		isHidden
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column inverter_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 105cbc52-d65f-45b6-968e-485e46db73ab
+		isHidden
+		summarizeBy: none
+		sourceColumn: inverter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_received
+		dataType: int64
+		formatString: #,0
+		lineageTag: 2950e9ae-5089-4e3b-ae8b-9e7c4a815857
+		summarizeBy: none
+		sourceColumn: rows_received
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_valid
+		dataType: int64
+		formatString: #,0
+		lineageTag: 038d04fb-1018-47f5-8191-590c42c79c1c
+		summarizeBy: none
+		sourceColumn: rows_valid
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_empty
+		dataType: int64
+		formatString: #,0
+		lineageTag: e7a82c20-e5e6-4f0c-9dd2-84e869616452
+		summarizeBy: none
+		sourceColumn: rows_empty
+
+		annotation SummarizationSetBy = Automatic
+
+	column rows_other_invalid
+		dataType: int64
+		formatString: #,0
+		lineageTag: f72699ec-6a1e-460d-81cd-81b0c6db0211
+		summarizeBy: none
+		sourceColumn: rows_other_invalid
+
+		annotation SummarizationSetBy = Automatic
+
+	column covered_seconds
+		dataType: double
+		formatString: #,0
+		lineageTag: 3c37bb01-18b0-410e-8eab-f94903f33851
+		summarizeBy: none
+		sourceColumn: covered_seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	column expected_seconds
+		dataType: double
+		formatString: #,0
+		lineageTag: 1807dfaf-1f7e-4273-8f56-d48f05e1ddfb
+		summarizeBy: none
+		sourceColumn: expected_seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_gap_seconds
+		dataType: double
+		formatString: #,0
+		lineageTag: fcf2c86d-9394-4318-8fa9-60d1af925385
+		summarizeBy: none
+		sourceColumn: max_gap_seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	column gaps_over_limit
+		dataType: int64
+		formatString: 0
+		lineageTag: 50a22a1b-59ad-4533-9b81-3e24efa4f9f1
+		summarizeBy: none
+		sourceColumn: gaps_over_limit
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_quality_day = m
+		mode: import
+		source = ```
+			let
+			    Origen = PostgreSQL.Database(Servidor, BaseDeDatos),
+			    Tabla = Origen{[Schema = "gold", Item = "fact_quality_day"]}[Data],
+			    Columnas = Table.SelectColumns(Tabla, {"date_key", "inverter_id", "rows_received", "rows_valid", "rows_empty", "rows_other_invalid", "covered_seconds", "expected_seconds", "max_gap_seconds", "gaps_over_limit"}),
+			    Tipos = Table.TransformColumnTypes(Columnas, {{"date_key", Int64.Type}, {"inverter_id", Int64.Type}, {"rows_received", Int64.Type}, {"rows_valid", Int64.Type}, {"rows_empty", Int64.Type}, {"rows_other_invalid", Int64.Type}, {"covered_seconds", type number}, {"expected_seconds", type number}, {"max_gap_seconds", type number}, {"gaps_over_limit", Int64.Type}})
+			in
+			    Tipos
+			```
+
+	annotation PBI_ResultType = Table

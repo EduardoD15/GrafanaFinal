@@ -1,0 +1,24 @@
+table 'Capacidad FV'
+	lineageTag: 1f684c50-9e74-4650-a980-f7bd1cd33258
+
+	column 'Aumento %'
+		dataType: int64
+		formatString: 0
+		lineageTag: 85c80ede-202c-415a-898d-b8601e47caa6
+		summarizeBy: none
+		sourceColumn: Aumento %
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Capacidad FV' = m
+		mode: import
+		source = ```
+			let
+			    Origen = List.Numbers(0, 21, 5),
+			    Tabla = Table.FromList(Origen, Splitter.SplitByNothing(), {"Aumento %"}),
+			    Tipos = Table.TransformColumnTypes(Tabla, {{"Aumento %", Int64.Type}})
+			in
+			    Tipos
+			```
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,24 @@
+table 'Factor CO2'
+	lineageTag: 328bf8ae-57ad-457d-b4f0-31fc8acaca45
+
+	column 'Factor g/kWh'
+		dataType: int64
+		formatString: 0
+		lineageTag: ff44577c-b8bf-477a-8e5f-87558f94b50b
+		summarizeBy: none
+		sourceColumn: Factor g/kWh
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Factor CO2' = m
+		mode: import
+		source = ```
+			let
+			    Origen = List.Numbers(50, 131, 5),
+			    Tabla = Table.FromList(Origen, Splitter.SplitByNothing(), {"Factor g/kWh"}),
+			    Tipos = Table.TransformColumnTypes(Tabla, {{"Factor g/kWh", Int64.Type}})
+			in
+			    Tipos
+			```
+
+	annotation PBI_ResultType = Table

@@ -1,104 +1,74 @@
 # Power BI SolarBI
 
-## Que entregar y cuantas paginas
+Proyecto de Power BI (`SolarBI.pbip`, formato PBIP con modelo en TMDL) conectado a la base `solarbi` de PostgreSQL en modo Importar. Se abre con Power BI Desktop reciente (activar "Proyectos de Power BI" y "Formato TMDL" en Opciones > Características de versión preliminar si el programa lo pide).
 
-El documento del Taller 6 exige **un minimo de tres paginas** en Power BI. La guia de abajo propone tres: resumen ejecutivo, balance energetico, y bateria/calidad. Agrega mas solo si el profesor lo solicita o si tu analisis lo necesita.
+## Conexión
 
-**Estado actual:** aqui estan el diseno, las medidas DAX y las instrucciones. Aun falta abrir Power BI Desktop, conectar el modelo, crear los visuales y guardar `SolarBI.pbip`; este archivo no se puede generar ni validar fielmente sin Power BI Desktop.
+1. Levantar la base: `.\run.ps1 up` (Compose, `localhost:5432`) o `.\run.ps1 k8s-up` (Kubernetes; con `kubectl port-forward -n solarbi service/postgres-nodeport 30432:5432` queda en `localhost:30432`). La ETL debe haber terminado (`.\run.ps1 status`).
+2. Abrir `SolarBI.pbip`. Los parámetros `Servidor` y `BaseDeDatos` (Transformar datos > Editar parámetros) apuntan por defecto a `localhost:5432` y `solarbi`.
+3. Credenciales: usuario `solarbi_reader` y la clave `BI_READER_PASSWORD` del `.env` local. El rol `bi_reader` solo tiene SELECT sobre el esquema `gold`; no se usa el usuario dueño de la base. Ninguna credencial queda guardada en el proyecto.
+4. Actualizar. El modelo importa seis tablas de `gold` (`dim_date`, `dim_time`, `dim_inverter`, `v_energy_hour`, `fact_quality_day`, `v_event`) y tres tablas de parámetros construidas en Power Query.
 
-## 1. Conectar e importar
+## Modelo
 
-1. Elige un solo modo de ejecucion. Con Compose, inicia la base y la ETL con `.\run.ps1 up`; PostgreSQL queda en `localhost:5432`. Con Kubernetes, ejecuta `.\run.ps1 k8s-up` y, en otra terminal que debes dejar abierta, ejecuta `kubectl port-forward -n solarbi service/postgres-nodeport 30432:5432`; con ese modo, PostgreSQL queda en `localhost:30432`. En ambos casos la base se llama `solarbi`.
-2. En Power BI Desktop elige **Obtener datos > Base de datos PostgreSQL**. Servidor: `localhost:5432` con Compose o `localhost:30432` con Kubernetes; base: `solarbi`; modo **Importar**. Usa las credenciales locales de `SolarBI\.env`; no las guardes en el repositorio ni en capturas.
-3. Importa estas tablas:
+Esquema en estrella con tres dimensiones conformadas y tres hechos, todas las relaciones 1:* con filtro de la dimensión al hecho:
 
-   - `gold.dim_date`
-   - `gold.dim_time`
-   - `gold.dim_inverter`
-   - `gold.fact_energy_reading`
-   - `gold.fact_event`
-   - `silver.measurements` (renombrala en Power Query como `silver_measurements`)
+| Hecho | Grano | Dimensiones |
+|---|---|---|
+| `fact_energy_hour` (vista `gold.v_energy_hour`) | inversor x hora local del sitio | fecha, hora, inversor |
+| `fact_quality_day` | inversor x día local | fecha, inversor |
+| `fact_event` (vista `gold.v_event`) | evento o episodio | fecha, hora, inversor |
 
-   No cargues el SQLite ni los CSV para el modelo del tablero.
+`dim_date` está marcada como tabla de fechas (`calendar_date`) y trae jerarquía año > trimestre > mes > día; `dim_time` trae jerarquía periodo del día > hora. Las vistas ya convierten la hora UTC a la hora local de Shenzhen (UTC+8) y excluyen las filas del simulador, de modo que el histórico no se mezcla con la demostración en vivo.
 
-## 2. Crear las relaciones
+Las tablas `Tarifa`, `Factor CO2` y `Capacidad FV` son los parámetros de escenario (what-if) y `Balance` ordena los conceptos del balance energético. Ninguna de las cuatro se relaciona con los hechos; sus valores entran a las medidas con `SELECTEDVALUE`.
 
-En **Vista Modelo**, crea relaciones de cardinalidad **uno a varios (1:*)**, con filtro de la dimension hacia el hecho:
+## Medidas
 
-| Lado 1 | Lado * |
+Las 39 medidas viven en la tabla `Medidas`, agrupadas por carpeta. El detalle está en [Medidas.dax](Medidas.dax).
+
+| Carpeta | Contenido |
 |---|---|
-| `dim_date[date_key]` | `fact_energy_reading[date_key]` |
-| `dim_date[date_key]` | `fact_event[date_key]` |
-| `dim_time[time_key]` | `fact_energy_reading[time_key]` |
-| `dim_time[time_key]` | `fact_event[time_key]` |
-| `dim_inverter[inverter_id]` | `fact_energy_reading[inverter_id]` |
-| `dim_inverter[inverter_id]` | `fact_event[inverter_id]` |
-| `dim_date[calendar_date]` | `silver_measurements[measurement_date]` |
-| `dim_inverter[inverter_id]` | `silver_measurements[inverter]` |
+| 01. Energía | solar (PV1), salida del inversor (fase A), red importada, descarga y carga de batería, pérdidas y otros |
+| 02. Escenarios | factor de CO2, tarifa y aumento de capacidad (what-if), CO2 evitado, ahorro y costo en COP, solar con más capacidad |
+| 03. Híbrido y batería | dependencia de la red, autosuficiencia, SoC promedio y mínimo, horas con SoC bajo, horas sin red |
+| 04. Calidad y disponibilidad | lecturas recibidas/válidas/vacías, % de datos válidos, disponibilidad del registro, huecos sobre el límite |
+| 05. Eventos | episodios de red ausente, batería baja, huecos de datos y registros de contexto |
+| 06. Inteligencia de tiempo | mes anterior, variación mensual, acumulado del año (TOTALYTD), acumulado del periodo, promedio móvil de 7 días |
+| 07. Balance | valor por concepto para el gráfico de balance |
 
-Marca `dim_date` como tabla de fechas usando `dim_date[calendar_date]`. No relaciones directamente las tablas de hechos entre si. En los visuales historicos excluye `is_simulated = true`; las filas simuladas son solo para la demostracion en vivo.
+Valores de referencia con todos los segmentadores en "Todas" (coinciden con el reporte de la ETL y con las consultas de `sql/consultas.sql`): solar 2.346,6 kWh; red importada 4.734,4 kWh; CO2 evitado 0,52 t con el factor 0,220 kg/kWh; dependencia de la red 66,9 %; disponibilidad del registro 82,5 %; datos válidos 98,1 %.
 
-## 3. Crear las medidas
+Las medidas de razón devuelven vacío cuando no hay datos en el contexto, en lugar de 0 o 100 %.
 
-En **Modelado > Nueva tabla**, crea una tabla para organizar las medidas:
+## Páginas
 
-```DAX
-_Medidas = ROW ( "Grupo", "Medidas" )
-```
+| Página | Contenido |
+|---|---|
+| Resumen | tarjetas de energía, CO2, ahorro, dependencia y disponibilidad; solar frente a red por día; CO2 por mes e inversor; dependencia y autosuficiencia por mes |
+| Balance energético | barras de balance (solar + red + descarga - carga - pérdidas = salida), columnas apiladas con drill-down año > trimestre > mes > día, matriz por mes e inversor |
+| Batería y red | SoC promedio por hora, SoC mínimo diario, episodios por mes, perfil horario de solar frente a red |
+| Calidad de datos | lecturas recibidas/válidas/vacías, disponibilidad por mes y por día, matriz por inversor |
+| Escenarios | parámetros what-if de tarifa, factor de CO2 y aumento de capacidad; ahorro y costo; solar acumulado; promedio móvil |
 
-Oculta la columna `_Medidas[Grupo]`. Selecciona la tabla `_Medidas` y usa **Modelado > Nueva medida** para cada medida de `Medidas.dax`. Copia y pega cada bloque completo, incluido el nombre antes del signo `=`.
+Todas las páginas tienen el navegador de páginas arriba. Las cuatro primeras traen tres segmentadores desplegables (año, mes, inversor); la de escenarios trae los tres parámetros what-if.
 
-Medidas incluidas:
+## Parámetros what-if
 
-- Energia: `Energia Solar (kWh)`, `Energia Red Importada (kWh)`, `Energia Salida Fase A (kWh)`.
-- SolarBI: `CO2 Evitado Estimado (kg)` y `(t)`.
-- Tendencia: `Solar Mes Anterior (kWh)` y `Variacion Solar MoM (%)`.
-- Escenario economico: `Costo Red (COP)` y `Ahorro Solar Potencial (COP)`.
-- Operacion/calidad: `Porcentaje Dependencia de Red`, `SoC Promedio (%)`, `Lecturas Validas (%)` y `Disponibilidad del Registro (%)`.
+| Parámetro | Rango | Valor por defecto | Fuente |
+|---|---|---|---|
+| Tarifa COP/kWh | 300 a 1.500, paso 10 | 790 | Tarifa de referencia EPM estrato 3 de diciembre de 2025: 790,49 COP/kWh |
+| Factor g/kWh | 50 a 700, paso 5 | 220 | Resolución UPME 085 de 2026, inventarios del SIN 2024: 0,220 tCO2eq/MWh |
+| Aumento % de capacidad | 0 a 100, paso 5 | 0 | Escenario hipotético; no hay placa de capacidad en los datos |
 
-Si tu Power BI traduce nombres de funciones, manten el separador regional que use el editor. No cambies las unidades de CO2: el factor configurado es `kg CO2e/kWh`.
+El factor 0,660 tCO2eq/MWh que publica la misma resolución es el de proyectos MDL eólicos y solares; no es el que corresponde a una comparación contra la red actual, por eso el valor por defecto es el del SIN.
 
-### Parametro What-if de tarifa
+## Lectura correcta de los indicadores
 
-1. Ve a **Modelado > Nuevo parametro > Rango numerico**.
-2. Nombre: `Tarifa escenario`; tipo: **Numero decimal fijo**; minimo: `0`; maximo: ajustalo a la tarifa real de la factura; incremento sugerido: `10`; valor predeterminado de demostracion: `1000`.
-3. Marca **Agregar segmentador a esta pagina**. El parametro genera la tabla y columna `'Tarifa escenario'[Tarifa escenario]` que usan las dos medidas de COP.
-4. Sustituye el valor provisional por una tarifa real solo despues de documentar su unidad, periodo y fuente.
+- Solar es el canal `pv1power` (un solo canal FV); la salida es `outw_a` (fase A). Ninguno es la generación ni la carga totales de la instalación, por eso "Pérdidas y otros" es un residuo de balance y no una pérdida física medida.
+- La red importada es el canal `linepowerw_a`. A partir de mayo de 2026 el inversor 1 reporta la red ausente durante semanas (episodios de 524 y 581 horas); en esos meses la dependencia cae a 0 % y la autosuficiencia sube a 100 %, lo que describe operación en isla o pérdida del canal, no una mejora de desempeño.
+- La disponibilidad es tiempo cubierto por lecturas continuas (huecos de hasta 900 s) sobre el tiempo esperado; no es un SLA ni la disponibilidad del equipo.
 
-## 4. Paginas y visuales que debes crear
+## Guardado
 
-Usa **Insertar > Nueva pagina** tres veces. Escribe el titulo indicado en cada pagina y agrega los visuales sugeridos desde el panel **Visualizaciones**.
-
-### Pagina 1 — `Resumen ejecutivo`
-
-- Segmentadores: `dim_date[calendar_date]` (tipo Entre), `dim_inverter[inverter_name]` y el parametro `Tarifa escenario`.
-- Cuatro tarjetas: `Energia Solar (kWh)`, `Energia Red Importada (kWh)`, `CO2 Evitado Estimado (t)` y `Ahorro Solar Potencial (COP)`.
-- Grafico de lineas: eje `dim_date[calendar_date]`; valores `Energia Solar (kWh)` y `Energia Red Importada (kWh)`.
-- Grafico de barras agrupadas: eje `dim_inverter[inverter_name]`; valores `CO2 Evitado Estimado (kg)`.
-- Agrega una nota visible: factor SIN provisional hasta verificar año y fuente UPME.
-
-### Pagina 2 — `Balance energetico`
-
-- Segmentadores sincronizados: fecha, inversor y `is_simulated = false`.
-- Grafico de columnas apiladas: eje `dim_date[year]` > `quarter` > `month` > `calendar_date`; leyenda `dim_inverter[inverter_name]`; valores `Energia Solar (kWh)` y `Energia Red Importada (kWh)`. Habilita **Exploracion en profundidad (drill-down)**.
-- Grafico de lineas: eje `dim_date[calendar_date]`; valores `Energia Solar (kWh)`, `Energia Salida Fase A (kWh)` y `Energia Red Importada (kWh)`.
-- Matriz: filas `dim_inverter[inverter_name]`; columnas `dim_date[year]` y `dim_date[month]`; valores las tres medidas de energia y `CO2 Evitado Estimado (kg)`.
-- Etiqueta siempre `Energia Salida Fase A`: `outw_a` no representa la carga trifasica total.
-
-### Pagina 3 — `Bateria y calidad`
-
-- Segmentadores: fecha e inversor.
-- Grafico de lineas: eje `silver_measurements[measured_at]`; leyenda `silver_measurements[inverter]`; valor `silver_measurements[battery_soc_pct]`. Anade una linea constante de 20 % como referencia de alerta.
-- Tarjetas: `SoC Promedio (%)`, `Lecturas Validas (%)` y `Disponibilidad del Registro (%)`.
-- Grafico de columnas: eje `silver_measurements[invalid_reason]`; valor **Recuento de** `silver_measurements[read_ts]`; filtro visual `is_valid = false` y `is_simulated = false`.
-- Tabla de eventos: `fact_event[occurred_at]`, `fact_event[inverter_id]`, `fact_event[event_type]`, `fact_event[severity]` y `fact_event[context_source]`.
-- En disponibilidad, la cadencia esperada de 13 s es una estimacion de cobertura, no un SLA ni una medicion de disponibilidad del inversor.
-
-## 5. Guardar y comprobar
-
-1. Agrega navegacion entre paginas (**Insertar > Botones > Navegador de paginas**) y titulos/unidades en todos los visuales. Si quieres que los segmentadores controlen las tres paginas, activa **Vista > Sincronizar segmentadores** y marca cada pagina.
-2. Prueba los segmentadores, el drill-down y el parametro What-if. Comprueba que las paginas historicas excluyen las muestras sinteticas.
-3. Guarda como **Power BI Project (`.pbip`)** dentro de `SolarBI\PowerBI\`, con nombre `SolarBI.pbip`. No publiques ni subas claves o datos locales.
-4. Exporta una copia PDF para el informe del taller y toma capturas sin credenciales.
-
-Kubernetes requiere tuneles `kubectl port-forward` para PostgreSQL y Grafana en este equipo; la guia operativa indica los comandos. Compose usa directamente `localhost:5432` y Grafana en `http://localhost:3000`. Distingue siempre la simulacion del tablero Grafana de la telemetria historica real.
+El proyecto se guarda sin datos importados ni credenciales. Al abrirlo en otra máquina hay que actualizar una vez. Las capturas de las cinco páginas están en `docs/img/powerbi-*.png`.

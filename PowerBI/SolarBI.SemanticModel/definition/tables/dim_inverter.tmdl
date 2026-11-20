@@ -1,0 +1,60 @@
+table dim_inverter
+	lineageTag: 88736737-6ce4-448f-85d6-ac4263d52b10
+
+	column inverter_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 62186f4b-1422-4bef-9e38-42616a01977b
+		isHidden
+		summarizeBy: none
+		sourceColumn: inverter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column inverter_name
+		dataType: string
+		lineageTag: 2cb8cefc-5814-453f-afec-42754e0e8896
+		summarizeBy: none
+		sourceColumn: inverter_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_system
+		dataType: string
+		lineageTag: ffce6973-7f62-4f26-b6c3-266043710baf
+		summarizeBy: none
+		sourceColumn: source_system
+
+		annotation SummarizationSetBy = Automatic
+
+	column observed_pv1_peak_w
+		dataType: double
+		formatString: #,0
+		lineageTag: 49a4c222-6a6d-4402-90a3-727dc7be5613
+		summarizeBy: none
+		sourceColumn: observed_pv1_peak_w
+
+		annotation SummarizationSetBy = Automatic
+
+	column observed_output_peak_w
+		dataType: double
+		formatString: #,0
+		lineageTag: 84f32551-5366-4ce2-ad4d-666177bb3654
+		summarizeBy: none
+		sourceColumn: observed_output_peak_w
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_inverter = m
+		mode: import
+		source = ```
+			let
+			    Origen = PostgreSQL.Database(Servidor, BaseDeDatos),
+			    Tabla = Origen{[Schema = "gold", Item = "dim_inverter"]}[Data],
+			    Columnas = Table.SelectColumns(Tabla, {"inverter_id", "inverter_name", "source_system", "observed_pv1_peak_w", "observed_output_peak_w"}),
+			    Tipos = Table.TransformColumnTypes(Columnas, {{"inverter_id", Int64.Type}, {"inverter_name", type text}, {"source_system", type text}, {"observed_pv1_peak_w", type number}, {"observed_output_peak_w", type number}})
+			in
+			    Tipos
+			```
+
+	annotation PBI_ResultType = Table

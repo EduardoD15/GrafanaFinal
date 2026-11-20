@@ -1,0 +1,214 @@
+table Medidas
+	lineageTag: f92af541-a5dc-4896-98d1-e3045aa26879
+
+	measure 'Energía Solar (kWh)' = SUM(fact_energy_hour[solar_kwh])
+		formatString: #,0.0
+		displayFolder: 01. Energía
+		lineageTag: 6cbdbb71-075f-4e1d-8d5f-ad71a7e27f8c
+
+	measure 'Energía Salida Inversor (kWh)' = SUM(fact_energy_hour[load_kwh])
+		formatString: #,0.0
+		displayFolder: 01. Energía
+		lineageTag: 6a50f9fc-5b20-41e6-a055-0db994002427
+
+	measure 'Energía Red Importada (kWh)' = SUM(fact_energy_hour[grid_import_kwh])
+		formatString: #,0.0
+		displayFolder: 01. Energía
+		lineageTag: c6cf381a-3d43-481c-a08f-02b16254c3f0
+
+	measure 'Descarga Batería (kWh)' = SUM(fact_energy_hour[battery_discharge_kwh])
+		formatString: #,0.0
+		displayFolder: 01. Energía
+		lineageTag: c6605afb-3835-4e48-a99f-b2666bc5b3b3
+
+	measure 'Carga Batería (kWh)' = SUM(fact_energy_hour[battery_charge_kwh])
+		formatString: #,0.0
+		displayFolder: 01. Energía
+		lineageTag: 07465834-8afd-44ae-aef7-b374200da2b8
+
+	measure 'Pérdidas y Otros (kWh)' = [Energía Solar (kWh)] + [Energía Red Importada (kWh)] + [Descarga Batería (kWh)] - [Carga Batería (kWh)] - [Energía Salida Inversor (kWh)]
+		formatString: #,0.0
+		displayFolder: 01. Energía
+		lineageTag: 8a94a6ef-ef46-4c53-b79e-cb4ea95c2c0b
+
+	measure 'CO2 Calculado en el ETL (kg)' = SUM(fact_energy_hour[co2_avoided_kg])
+		formatString: #,0.0
+		displayFolder: 01. Energía
+		lineageTag: e39f13d7-6598-4372-8e0d-ce0daf0a6148
+
+	measure 'Factor CO2 Escenario (kg/kWh)' = DIVIDE(SELECTEDVALUE('Factor CO2'[Factor g/kWh], 220), 1000)
+		formatString: 0.000
+		displayFolder: 02. Escenarios
+		lineageTag: 3a6ef8d3-25ce-43fc-895e-f1d04145ff00
+
+	measure 'Tarifa Escenario (COP/kWh)' = SELECTEDVALUE(Tarifa[Tarifa COP/kWh], 790)
+		formatString: #,0
+		displayFolder: 02. Escenarios
+		lineageTag: 8a88ce1b-46de-4eef-843f-9f5b05fb0d55
+
+	measure 'Aumento de Capacidad Escenario (%)' = SELECTEDVALUE('Capacidad FV'[Aumento %], 0)
+		formatString: 0
+		displayFolder: 02. Escenarios
+		lineageTag: f55ee054-4389-43ec-aafa-2b317a957971
+
+	measure 'CO2 Evitado (kg)' = [Energía Solar (kWh)] * [Factor CO2 Escenario (kg/kWh)]
+		formatString: #,0
+		displayFolder: 02. Escenarios
+		lineageTag: a07481bd-f1b8-4a7c-a37f-0de050931ba9
+
+	measure 'CO2 Evitado (t)' = DIVIDE([CO2 Evitado (kg)], 1000)
+		formatString: #,0.00
+		displayFolder: 02. Escenarios
+		lineageTag: 2de6c061-d6ec-46fd-96e5-fc4497f97ad6
+
+	measure 'Ahorro Solar (COP)' = [Energía Solar (kWh)] * [Tarifa Escenario (COP/kWh)]
+		formatString: #,0
+		displayFolder: 02. Escenarios
+		lineageTag: ddba7481-a674-4fca-89ba-f21c8d903c66
+
+	measure 'Costo Red (COP)' = [Energía Red Importada (kWh)] * [Tarifa Escenario (COP/kWh)]
+		formatString: #,0
+		displayFolder: 02. Escenarios
+		lineageTag: d1e29034-8398-40cd-92e3-8779f6181e7c
+
+	measure 'Solar con Más Capacidad (kWh)' = [Energía Solar (kWh)] * (1 + [Aumento de Capacidad Escenario (%)] / 100)
+		formatString: #,0.0
+		displayFolder: 02. Escenarios
+		lineageTag: 853c2409-a20c-47ac-9738-f7c743e5a40a
+
+	measure 'Ahorro Adicional por Capacidad (COP)' = ([Solar con Más Capacidad (kWh)] - [Energía Solar (kWh)]) * [Tarifa Escenario (COP/kWh)]
+		formatString: #,0
+		displayFolder: 02. Escenarios
+		lineageTag: 0e66c6be-5147-4b93-be3b-496ec129017d
+
+	measure 'CO2 Adicional por Capacidad (kg)' = ([Solar con Más Capacidad (kWh)] - [Energía Solar (kWh)]) * [Factor CO2 Escenario (kg/kWh)]
+		formatString: #,0
+		displayFolder: 02. Escenarios
+		lineageTag: a0bb4fcd-02eb-48d8-9734-fc4aa86a04d1
+
+	measure 'Dependencia de la Red (%)' = DIVIDE([Energía Red Importada (kWh)], [Energía Red Importada (kWh)] + [Energía Solar (kWh)])
+		formatString: 0.0%
+		displayFolder: 03. Híbrido y batería
+		lineageTag: 0eec8bf9-7875-442b-be28-9120fa66a3e9
+
+	measure 'Autosuficiencia (%)' = IF(ISBLANK([Energía Salida Inversor (kWh)]), BLANK(), MAX(0, 1 - DIVIDE([Energía Red Importada (kWh)], [Energía Salida Inversor (kWh)])))
+		formatString: 0.0%
+		displayFolder: 03. Híbrido y batería
+		lineageTag: 8234efdd-addc-4401-b8ca-6b4af85e9bea
+
+	measure 'SoC Promedio (%)' = AVERAGE(fact_energy_hour[avg_soc_pct])
+		formatString: 0.0
+		displayFolder: 03. Híbrido y batería
+		lineageTag: bec4f31c-ed5e-4b81-a69d-e5d1dcb30d7d
+
+	measure 'SoC Mínimo (%)' = MIN(fact_energy_hour[min_soc_pct])
+		formatString: 0.0
+		displayFolder: 03. Híbrido y batería
+		lineageTag: b50f9e6c-6629-4c24-9f29-86b2e7f29366
+
+	measure 'Horas con SoC Bajo (< 20 %)' = COUNTROWS(FILTER(fact_energy_hour, NOT ISBLANK(fact_energy_hour[min_soc_pct]) && fact_energy_hour[min_soc_pct] < 20))
+		formatString: #,0
+		displayFolder: 03. Híbrido y batería
+		lineageTag: ca482b40-f374-4ac6-9c24-72e5f9e65abf
+
+	measure 'Horas sin Red (%)' = IF(ISBLANK(SUM(fact_energy_hour[readings])), BLANK(), 1 - DIVIDE(SUMX(fact_energy_hour, fact_energy_hour[grid_present_ratio] * fact_energy_hour[readings]), SUM(fact_energy_hour[readings])))
+		formatString: 0.0%
+		displayFolder: 03. Híbrido y batería
+		lineageTag: 469855d2-d43c-4531-8fc4-60a13b85f43e
+
+	measure 'Lecturas Recibidas' = SUM(fact_quality_day[rows_received])
+		formatString: #,0
+		displayFolder: 04. Calidad y disponibilidad
+		lineageTag: 5fee13c8-3373-42d7-9c78-752d57fbeeeb
+
+	measure 'Lecturas Válidas' = SUM(fact_quality_day[rows_valid])
+		formatString: #,0
+		displayFolder: 04. Calidad y disponibilidad
+		lineageTag: 7522aa7f-a313-4dd6-b592-91d65bee8f77
+
+	measure 'Lecturas Vacías' = SUM(fact_quality_day[rows_empty])
+		formatString: #,0
+		displayFolder: 04. Calidad y disponibilidad
+		lineageTag: e5a34078-795c-4b9b-8fba-5e788c7ddcd4
+
+	measure 'Datos Válidos (%)' = DIVIDE([Lecturas Válidas], [Lecturas Recibidas])
+		formatString: 0.0%
+		displayFolder: 04. Calidad y disponibilidad
+		lineageTag: 4febec70-94a0-4f05-ac64-2a30c9e39659
+
+	measure 'Disponibilidad del Registro (%)' = MIN(1, DIVIDE(SUM(fact_quality_day[covered_seconds]), SUM(fact_quality_day[expected_seconds])))
+		formatString: 0.0%
+		displayFolder: 04. Calidad y disponibilidad
+		lineageTag: 69190876-a0c5-420c-a885-f868301a5d12
+
+	measure 'Huecos sobre el Límite' = SUM(fact_quality_day[gaps_over_limit])
+		formatString: #,0
+		displayFolder: 04. Calidad y disponibilidad
+		lineageTag: 015c1d5c-e4cf-4d0e-bc1f-9183275e1a38
+
+	measure 'Episodios de Red Ausente' = CALCULATE(COUNTROWS(fact_event), fact_event[event_type] = "grid_absent")
+		formatString: #,0
+		displayFolder: 05. Eventos
+		lineageTag: f49b8c8d-d052-4fff-9abc-12f8f35031ce
+
+	measure 'Episodios de Batería Baja' = CALCULATE(COUNTROWS(fact_event), fact_event[event_type] = "low_battery_soc")
+		formatString: #,0
+		displayFolder: 05. Eventos
+		lineageTag: 68881c56-b3cd-4e1c-85f2-3fa0d5c67ee3
+
+	measure 'Huecos de Datos' = CALCULATE(COUNTROWS(fact_event), fact_event[event_type] = "data_gap")
+		formatString: #,0
+		displayFolder: 05. Eventos
+		lineageTag: 2c2dba9d-a39d-4086-899a-0307cb9d2149
+
+	measure 'Registros de Contexto' = CALCULATE(COUNTROWS(fact_event), fact_event[event_type] = "context_record")
+		formatString: #,0
+		displayFolder: 05. Eventos
+		lineageTag: 8bf6237b-5f6f-4b2c-8c8d-a302158e9c4b
+
+	measure 'Solar Mes Anterior (kWh)' = CALCULATE([Energía Solar (kWh)], DATEADD(dim_date[calendar_date], -1, MONTH))
+		formatString: #,0.0
+		displayFolder: 06. Inteligencia de tiempo
+		lineageTag: b6f7b3d0-2351-428d-83d8-03afbb235be2
+
+	measure 'Variación Solar vs Mes Anterior (%)' = DIVIDE([Energía Solar (kWh)] - [Solar Mes Anterior (kWh)], [Solar Mes Anterior (kWh)])
+		formatString: 0.0%
+		displayFolder: 06. Inteligencia de tiempo
+		lineageTag: e74c3167-ffb2-48ea-99ca-da68bd513018
+
+	measure 'Solar Acumulado del Año (kWh)' = TOTALYTD([Energía Solar (kWh)], dim_date[calendar_date])
+		formatString: #,0
+		displayFolder: 06. Inteligencia de tiempo
+		lineageTag: d98d4098-3795-487b-888d-ebe904b2bee4
+
+	measure 'Solar Acumulado del Periodo (kWh)' = CALCULATE([Energía Solar (kWh)], FILTER(ALL(dim_date[calendar_date]), dim_date[calendar_date] <= MAX(dim_date[calendar_date])))
+		formatString: #,0
+		displayFolder: 06. Inteligencia de tiempo
+		lineageTag: 4e8494fb-9517-45da-b212-db56d9452ba0
+
+	measure 'Promedio Móvil 7 Días Solar (kWh)' = DIVIDE(CALCULATE([Energía Solar (kWh)], DATESINPERIOD(dim_date[calendar_date], MAX(dim_date[calendar_date]), -7, DAY)), 7)
+		formatString: #,0.0
+		displayFolder: 06. Inteligencia de tiempo
+		lineageTag: 64adbcea-f49e-42ce-8b6d-ba449297d61b
+
+	measure 'Valor Balance (kWh)' = SWITCH(SELECTEDVALUE(Balance[Orden]), 1, [Energía Solar (kWh)], 2, [Energía Red Importada (kWh)], 3, [Descarga Batería (kWh)], 4, -[Carga Batería (kWh)], 5, -[Pérdidas y Otros (kWh)], 6, -[Energía Salida Inversor (kWh)])
+		formatString: #,0.0
+		displayFolder: 07. Balance
+		lineageTag: f8993660-f690-4f31-89fa-a7fb616dd027
+
+	column Columna1
+		dataType: int64
+		isHidden
+		summarizeBy: none
+		sourceColumn: Columna1
+
+	partition Medidas = m
+		mode: import
+		source = ```
+			let
+			    Origen = #table(type table [Columna1 = Int64.Type], {{0}})
+			in
+			    Origen
+			```
+
+	annotation PBI_ResultType = Table

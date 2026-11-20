@@ -1,0 +1,670 @@
+{
+  "config": "{\"version\": \"5.68\", \"themeCollection\": {\"baseTheme\": {\"name\": \"CY23SU08\", \"version\": {\"visual\": \"2.12.0\", \"report\": \"3.4.0\", \"page\": \"2.3.1\"}}}, \"linguisticSchemaSyncVersion\": 2, \"objects\": {\"outspacePane\": [{\"properties\": {\"visible\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}",
+  "filters": "[]",
+  "layoutOptimization": 0,
+  "sections": [
+    {
+      "config": "{}",
+      "displayName": "Resumen",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.0,
+      "name": "8e7a9f19950499dd251d",
+      "ordinal": 0,
+      "visualContainers": [
+        {
+          "config": "{\"name\": \"e06024114258751b4c83\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 8, \"z\": 0, \"width\": 1000, \"height\": 34, \"tabOrder\": 0}}], \"singleVisual\": {\"visualType\": \"pageNavigator\", \"drillFilterOtherVisuals\": true}}",
+          "filters": "[]",
+          "height": 34,
+          "width": 1000,
+          "x": 20,
+          "y": 8,
+          "z": 0.0
+        },
+        {
+          "config": "{\"name\": \"00a63d6c51e370eb9a0a\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 50, \"z\": 10, \"width\": 130, \"height\": 60, \"tabOrder\": 10}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_date.year\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year\"}, \"Name\": \"dim_date.year\", \"NativeReferenceName\": \"year\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 130,
+          "x": 20,
+          "y": 50,
+          "z": 10.0
+        },
+        {
+          "config": "{\"name\": \"1c5914aa4e719d3c7dec\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 160, \"y\": 50, \"z\": 11, \"width\": 150, \"height\": 60, \"tabOrder\": 11}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_date.month_name\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"month_name\"}, \"Name\": \"dim_date.month_name\", \"NativeReferenceName\": \"month_name\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 150,
+          "x": 160,
+          "y": 50,
+          "z": 11.0
+        },
+        {
+          "config": "{\"name\": \"1919d11745ad49889310\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 320, \"y\": 50, \"z\": 12, \"width\": 170, \"height\": 60, \"tabOrder\": 12}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_inverter.inverter_name\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 170,
+          "x": 320,
+          "y": 50,
+          "z": 12.0
+        },
+        {
+          "config": "{\"name\": \"d09402f0ee99731c9452\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 500, \"y\": 50, \"z\": 13, \"width\": 118, \"height\": 70, \"tabOrder\": 13}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Energía Solar (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Solar (kWh)\"}, \"Name\": \"Medidas.Energía Solar (kWh)\", \"NativeReferenceName\": \"Energía Solar (kWh)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 500,
+          "y": 50,
+          "z": 13.0
+        },
+        {
+          "config": "{\"name\": \"7d83af67d461e4163207\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 624, \"y\": 50, \"z\": 14, \"width\": 118, \"height\": 70, \"tabOrder\": 14}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Energía Red Importada (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Red Importada (kWh)\"}, \"Name\": \"Medidas.Energía Red Importada (kWh)\", \"NativeReferenceName\": \"Energía Red Importada (kWh)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 624,
+          "y": 50,
+          "z": 14.0
+        },
+        {
+          "config": "{\"name\": \"35d15071950eadec6f11\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 748, \"y\": 50, \"z\": 15, \"width\": 118, \"height\": 70, \"tabOrder\": 15}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.CO2 Evitado (t)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"CO2 Evitado (t)\"}, \"Name\": \"Medidas.CO2 Evitado (t)\", \"NativeReferenceName\": \"CO2 Evitado (t)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 748,
+          "y": 50,
+          "z": 15.0
+        },
+        {
+          "config": "{\"name\": \"5900406329bc65b00a2d\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 872, \"y\": 50, \"z\": 16, \"width\": 118, \"height\": 70, \"tabOrder\": 16}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Ahorro Solar (COP)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Ahorro Solar (COP)\"}, \"Name\": \"Medidas.Ahorro Solar (COP)\", \"NativeReferenceName\": \"Ahorro Solar (COP)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 872,
+          "y": 50,
+          "z": 16.0
+        },
+        {
+          "config": "{\"name\": \"ede7ffb88309fadb8908\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 996, \"y\": 50, \"z\": 17, \"width\": 118, \"height\": 70, \"tabOrder\": 17}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Dependencia de la Red (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Dependencia de la Red (%)\"}, \"Name\": \"Medidas.Dependencia de la Red (%)\", \"NativeReferenceName\": \"Dependencia de la Red (%)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 996,
+          "y": 50,
+          "z": 17.0
+        },
+        {
+          "config": "{\"name\": \"6058ce1d62e05b4c8012\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1120, \"y\": 50, \"z\": 18, \"width\": 118, \"height\": 70, \"tabOrder\": 18}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Disponibilidad del Registro (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Disponibilidad del Registro (%)\"}, \"Name\": \"Medidas.Disponibilidad del Registro (%)\", \"NativeReferenceName\": \"Disponibilidad del Registro (%)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 1120,
+          "y": 50,
+          "z": 18.0
+        },
+        {
+          "config": "{\"name\": \"837abef7e268ffe976ab\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 135, \"z\": 19, \"width\": 740, \"height\": 280, \"tabOrder\": 19}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.calendar_date\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Energía Solar (kWh)\"}, {\"queryRef\": \"Medidas.Energía Red Importada (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"calendar_date\"}, \"Name\": \"dim_date.calendar_date\", \"NativeReferenceName\": \"calendar_date\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Solar (kWh)\"}, \"Name\": \"Medidas.Energía Solar (kWh)\", \"NativeReferenceName\": \"Energía Solar (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Red Importada (kWh)\"}, \"Name\": \"Medidas.Energía Red Importada (kWh)\", \"NativeReferenceName\": \"Energía Red Importada (kWh)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 740,
+          "x": 20,
+          "y": 135,
+          "z": 19.0
+        },
+        {
+          "config": "{\"name\": \"b91d1389b372a341738c\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 770, \"y\": 135, \"z\": 20, \"width\": 490, \"height\": 280, \"tabOrder\": 20}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month\", \"active\": true}], \"Series\": [{\"queryRef\": \"dim_inverter.inverter_name\"}], \"Y\": [{\"queryRef\": \"Medidas.CO2 Evitado (t)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year_month\"}, \"Name\": \"dim_date.year_month\", \"NativeReferenceName\": \"year_month\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"CO2 Evitado (t)\"}, \"Name\": \"Medidas.CO2 Evitado (t)\", \"NativeReferenceName\": \"CO2 Evitado (t)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 490,
+          "x": 770,
+          "y": 135,
+          "z": 20.0
+        },
+        {
+          "config": "{\"name\": \"8eb516f4488157241955\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 430, \"z\": 21, \"width\": 620, \"height\": 280, \"tabOrder\": 21}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_inverter.inverter_name\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Energía Solar (kWh)\"}, {\"queryRef\": \"Medidas.Energía Salida Inversor (kWh)\"}, {\"queryRef\": \"Medidas.Energía Red Importada (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Solar (kWh)\"}, \"Name\": \"Medidas.Energía Solar (kWh)\", \"NativeReferenceName\": \"Energía Solar (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Salida Inversor (kWh)\"}, \"Name\": \"Medidas.Energía Salida Inversor (kWh)\", \"NativeReferenceName\": \"Energía Salida Inversor (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Red Importada (kWh)\"}, \"Name\": \"Medidas.Energía Red Importada (kWh)\", \"NativeReferenceName\": \"Energía Red Importada (kWh)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 620,
+          "x": 20,
+          "y": 430,
+          "z": 21.0
+        },
+        {
+          "config": "{\"name\": \"49a04ac87fc089be9c1c\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 650, \"y\": 430, \"z\": 22, \"width\": 610, \"height\": 280, \"tabOrder\": 22}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Dependencia de la Red (%)\"}, {\"queryRef\": \"Medidas.Autosuficiencia (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year_month\"}, \"Name\": \"dim_date.year_month\", \"NativeReferenceName\": \"year_month\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Dependencia de la Red (%)\"}, \"Name\": \"Medidas.Dependencia de la Red (%)\", \"NativeReferenceName\": \"Dependencia de la Red (%)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Autosuficiencia (%)\"}, \"Name\": \"Medidas.Autosuficiencia (%)\", \"NativeReferenceName\": \"Autosuficiencia (%)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 610,
+          "x": 650,
+          "y": 430,
+          "z": 22.0
+        }
+      ],
+      "width": 1280.0
+    },
+    {
+      "config": "{}",
+      "displayName": "Balance energético",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.0,
+      "name": "9293c88b28756bad6be2",
+      "ordinal": 1,
+      "visualContainers": [
+        {
+          "config": "{\"name\": \"83507aac319ffb759e0f\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 8, \"z\": 0, \"width\": 1000, \"height\": 34, \"tabOrder\": 0}}], \"singleVisual\": {\"visualType\": \"pageNavigator\", \"drillFilterOtherVisuals\": true}}",
+          "filters": "[]",
+          "height": 34,
+          "width": 1000,
+          "x": 20,
+          "y": 8,
+          "z": 0.0
+        },
+        {
+          "config": "{\"name\": \"6c167608d9425d111a9d\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 50, \"z\": 10, \"width\": 130, \"height\": 60, \"tabOrder\": 10}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_date.year\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year\"}, \"Name\": \"dim_date.year\", \"NativeReferenceName\": \"year\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 130,
+          "x": 20,
+          "y": 50,
+          "z": 10.0
+        },
+        {
+          "config": "{\"name\": \"e4166616022717371472\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 160, \"y\": 50, \"z\": 11, \"width\": 150, \"height\": 60, \"tabOrder\": 11}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_date.month_name\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"month_name\"}, \"Name\": \"dim_date.month_name\", \"NativeReferenceName\": \"month_name\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 150,
+          "x": 160,
+          "y": 50,
+          "z": 11.0
+        },
+        {
+          "config": "{\"name\": \"7f9a8df05f2595f19a51\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 320, \"y\": 50, \"z\": 12, \"width\": 170, \"height\": 60, \"tabOrder\": 12}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_inverter.inverter_name\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 170,
+          "x": 320,
+          "y": 50,
+          "z": 12.0
+        },
+        {
+          "config": "{\"name\": \"6ce91dcf884cde0279e1\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 500, \"y\": 50, \"z\": 13, \"width\": 118, \"height\": 70, \"tabOrder\": 13}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Energía Solar (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Solar (kWh)\"}, \"Name\": \"Medidas.Energía Solar (kWh)\", \"NativeReferenceName\": \"Energía Solar (kWh)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 500,
+          "y": 50,
+          "z": 13.0
+        },
+        {
+          "config": "{\"name\": \"c009cd73de0081a0ba05\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 624, \"y\": 50, \"z\": 14, \"width\": 118, \"height\": 70, \"tabOrder\": 14}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Energía Red Importada (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Red Importada (kWh)\"}, \"Name\": \"Medidas.Energía Red Importada (kWh)\", \"NativeReferenceName\": \"Energía Red Importada (kWh)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 624,
+          "y": 50,
+          "z": 14.0
+        },
+        {
+          "config": "{\"name\": \"e01c99a46df0dde3a361\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 748, \"y\": 50, \"z\": 15, \"width\": 118, \"height\": 70, \"tabOrder\": 15}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Descarga Batería (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Descarga Batería (kWh)\"}, \"Name\": \"Medidas.Descarga Batería (kWh)\", \"NativeReferenceName\": \"Descarga Batería (kWh)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 748,
+          "y": 50,
+          "z": 15.0
+        },
+        {
+          "config": "{\"name\": \"eab065ed0de47db4304d\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 872, \"y\": 50, \"z\": 16, \"width\": 118, \"height\": 70, \"tabOrder\": 16}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Carga Batería (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Carga Batería (kWh)\"}, \"Name\": \"Medidas.Carga Batería (kWh)\", \"NativeReferenceName\": \"Carga Batería (kWh)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 872,
+          "y": 50,
+          "z": 16.0
+        },
+        {
+          "config": "{\"name\": \"d82f423674a6864fa3f3\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 996, \"y\": 50, \"z\": 17, \"width\": 118, \"height\": 70, \"tabOrder\": 17}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Pérdidas y Otros (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Pérdidas y Otros (kWh)\"}, \"Name\": \"Medidas.Pérdidas y Otros (kWh)\", \"NativeReferenceName\": \"Pérdidas y Otros (kWh)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 996,
+          "y": 50,
+          "z": 17.0
+        },
+        {
+          "config": "{\"name\": \"ed1d90624fe36b82e6c9\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1120, \"y\": 50, \"z\": 18, \"width\": 118, \"height\": 70, \"tabOrder\": 18}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Energía Salida Inversor (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Salida Inversor (kWh)\"}, \"Name\": \"Medidas.Energía Salida Inversor (kWh)\", \"NativeReferenceName\": \"Energía Salida Inversor (kWh)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 1120,
+          "y": 50,
+          "z": 18.0
+        },
+        {
+          "config": "{\"name\": \"06554f1a8a1d93d20470\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 135, \"z\": 19, \"width\": 530, \"height\": 290, \"tabOrder\": 19}}], \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Balance.Concepto\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Valor Balance (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"b\", \"Entity\": \"Balance\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"b\"}}, \"Property\": \"Concepto\"}, \"Name\": \"Balance.Concepto\", \"NativeReferenceName\": \"Concepto\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Valor Balance (kWh)\"}, \"Name\": \"Medidas.Valor Balance (kWh)\", \"NativeReferenceName\": \"Valor Balance (kWh)\"}]}}}",
+          "filters": "[]",
+          "height": 290,
+          "width": 530,
+          "x": 20,
+          "y": 135,
+          "z": 19.0
+        },
+        {
+          "config": "{\"name\": \"b766b437bdb5a51149bb\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 560, \"y\": 135, \"z\": 20, \"width\": 700, \"height\": 290, \"tabOrder\": 20}}], \"singleVisual\": {\"visualType\": \"columnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.Jerarquía de fechas.year\", \"active\": true}, {\"queryRef\": \"dim_date.Jerarquía de fechas.quarter\"}, {\"queryRef\": \"dim_date.Jerarquía de fechas.month_name\"}, {\"queryRef\": \"dim_date.Jerarquía de fechas.day\"}], \"Y\": [{\"queryRef\": \"Medidas.Energía Solar (kWh)\"}, {\"queryRef\": \"Medidas.Energía Red Importada (kWh)\"}, {\"queryRef\": \"Medidas.Descarga Batería (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"HierarchyLevel\": {\"Expression\": {\"Hierarchy\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Hierarchy\": \"Jerarquía de fechas\"}}, \"Level\": \"year\"}, \"Name\": \"dim_date.Jerarquía de fechas.year\", \"NativeReferenceName\": \"year\"}, {\"HierarchyLevel\": {\"Expression\": {\"Hierarchy\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Hierarchy\": \"Jerarquía de fechas\"}}, \"Level\": \"quarter\"}, \"Name\": \"dim_date.Jerarquía de fechas.quarter\", \"NativeReferenceName\": \"quarter\"}, {\"HierarchyLevel\": {\"Expression\": {\"Hierarchy\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Hierarchy\": \"Jerarquía de fechas\"}}, \"Level\": \"month_name\"}, \"Name\": \"dim_date.Jerarquía de fechas.month_name\", \"NativeReferenceName\": \"month_name\"}, {\"HierarchyLevel\": {\"Expression\": {\"Hierarchy\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Hierarchy\": \"Jerarquía de fechas\"}}, \"Level\": \"day\"}, \"Name\": \"dim_date.Jerarquía de fechas.day\", \"NativeReferenceName\": \"day\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Solar (kWh)\"}, \"Name\": \"Medidas.Energía Solar (kWh)\", \"NativeReferenceName\": \"Energía Solar (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Red Importada (kWh)\"}, \"Name\": \"Medidas.Energía Red Importada (kWh)\", \"NativeReferenceName\": \"Energía Red Importada (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Descarga Batería (kWh)\"}, \"Name\": \"Medidas.Descarga Batería (kWh)\", \"NativeReferenceName\": \"Descarga Batería (kWh)\"}]}}}",
+          "filters": "[]",
+          "height": 290,
+          "width": 700,
+          "x": 560,
+          "y": 135,
+          "z": 20.0
+        },
+        {
+          "config": "{\"name\": \"5e6cb5fb12e0d9090b89\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 440, \"z\": 21, \"width\": 1240, \"height\": 270, \"tabOrder\": 21}}], \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"dim_inverter.inverter_name\", \"active\": true}], \"Columns\": [{\"queryRef\": \"dim_date.year_month\", \"active\": true}], \"Values\": [{\"queryRef\": \"Medidas.Energía Solar (kWh)\"}, {\"queryRef\": \"Medidas.Energía Red Importada (kWh)\"}, {\"queryRef\": \"Medidas.Energía Salida Inversor (kWh)\"}, {\"queryRef\": \"Medidas.Pérdidas y Otros (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}, {\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year_month\"}, \"Name\": \"dim_date.year_month\", \"NativeReferenceName\": \"year_month\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Solar (kWh)\"}, \"Name\": \"Medidas.Energía Solar (kWh)\", \"NativeReferenceName\": \"Energía Solar (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Red Importada (kWh)\"}, \"Name\": \"Medidas.Energía Red Importada (kWh)\", \"NativeReferenceName\": \"Energía Red Importada (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Salida Inversor (kWh)\"}, \"Name\": \"Medidas.Energía Salida Inversor (kWh)\", \"NativeReferenceName\": \"Energía Salida Inversor (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Pérdidas y Otros (kWh)\"}, \"Name\": \"Medidas.Pérdidas y Otros (kWh)\", \"NativeReferenceName\": \"Pérdidas y Otros (kWh)\"}]}}}",
+          "filters": "[]",
+          "height": 270,
+          "width": 1240,
+          "x": 20,
+          "y": 440,
+          "z": 21.0
+        }
+      ],
+      "width": 1280.0
+    },
+    {
+      "config": "{}",
+      "displayName": "Batería y red",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.0,
+      "name": "bb04d7a7a3cc8c3d5f16",
+      "ordinal": 2,
+      "visualContainers": [
+        {
+          "config": "{\"name\": \"ff8bab74fe5766eebc57\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 8, \"z\": 0, \"width\": 1000, \"height\": 34, \"tabOrder\": 0}}], \"singleVisual\": {\"visualType\": \"pageNavigator\", \"drillFilterOtherVisuals\": true}}",
+          "filters": "[]",
+          "height": 34,
+          "width": 1000,
+          "x": 20,
+          "y": 8,
+          "z": 0.0
+        },
+        {
+          "config": "{\"name\": \"067fce1fd3d9849acfb5\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 50, \"z\": 10, \"width\": 130, \"height\": 60, \"tabOrder\": 10}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_date.year\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year\"}, \"Name\": \"dim_date.year\", \"NativeReferenceName\": \"year\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 130,
+          "x": 20,
+          "y": 50,
+          "z": 10.0
+        },
+        {
+          "config": "{\"name\": \"c40d397a762393550840\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 160, \"y\": 50, \"z\": 11, \"width\": 150, \"height\": 60, \"tabOrder\": 11}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_date.month_name\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"month_name\"}, \"Name\": \"dim_date.month_name\", \"NativeReferenceName\": \"month_name\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 150,
+          "x": 160,
+          "y": 50,
+          "z": 11.0
+        },
+        {
+          "config": "{\"name\": \"0c83d1711cbd2106119e\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 320, \"y\": 50, \"z\": 12, \"width\": 170, \"height\": 60, \"tabOrder\": 12}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_inverter.inverter_name\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 170,
+          "x": 320,
+          "y": 50,
+          "z": 12.0
+        },
+        {
+          "config": "{\"name\": \"85f1b464c554f675299b\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 500, \"y\": 50, \"z\": 13, \"width\": 118, \"height\": 70, \"tabOrder\": 13}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.SoC Promedio (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"SoC Promedio (%)\"}, \"Name\": \"Medidas.SoC Promedio (%)\", \"NativeReferenceName\": \"SoC Promedio (%)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 500,
+          "y": 50,
+          "z": 13.0
+        },
+        {
+          "config": "{\"name\": \"1a42aba4c70ee306f0c4\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 624, \"y\": 50, \"z\": 14, \"width\": 118, \"height\": 70, \"tabOrder\": 14}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.SoC Mínimo (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"SoC Mínimo (%)\"}, \"Name\": \"Medidas.SoC Mínimo (%)\", \"NativeReferenceName\": \"SoC Mínimo (%)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 624,
+          "y": 50,
+          "z": 14.0
+        },
+        {
+          "config": "{\"name\": \"6ded9f4fb02bb7a1774f\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 748, \"y\": 50, \"z\": 15, \"width\": 118, \"height\": 70, \"tabOrder\": 15}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Horas con SoC Bajo (< 20 %)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Horas con SoC Bajo (< 20 %)\"}, \"Name\": \"Medidas.Horas con SoC Bajo (< 20 %)\", \"NativeReferenceName\": \"Horas con SoC Bajo (< 20 %)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 748,
+          "y": 50,
+          "z": 15.0
+        },
+        {
+          "config": "{\"name\": \"7b6b2475263c78549014\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 872, \"y\": 50, \"z\": 16, \"width\": 118, \"height\": 70, \"tabOrder\": 16}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Horas sin Red (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Horas sin Red (%)\"}, \"Name\": \"Medidas.Horas sin Red (%)\", \"NativeReferenceName\": \"Horas sin Red (%)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 872,
+          "y": 50,
+          "z": 16.0
+        },
+        {
+          "config": "{\"name\": \"d9813a9afa39e261e34a\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 996, \"y\": 50, \"z\": 17, \"width\": 118, \"height\": 70, \"tabOrder\": 17}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Episodios de Red Ausente\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Episodios de Red Ausente\"}, \"Name\": \"Medidas.Episodios de Red Ausente\", \"NativeReferenceName\": \"Episodios de Red Ausente\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 996,
+          "y": 50,
+          "z": 17.0
+        },
+        {
+          "config": "{\"name\": \"a06d1f3c42b2e2cbbb93\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1120, \"y\": 50, \"z\": 18, \"width\": 118, \"height\": 70, \"tabOrder\": 18}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Episodios de Batería Baja\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Episodios de Batería Baja\"}, \"Name\": \"Medidas.Episodios de Batería Baja\", \"NativeReferenceName\": \"Episodios de Batería Baja\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 1120,
+          "y": 50,
+          "z": 18.0
+        },
+        {
+          "config": "{\"name\": \"ac9f74f09af5b3618e1c\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 135, \"z\": 19, \"width\": 620, \"height\": 280, \"tabOrder\": 19}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_time.hour\", \"active\": true}], \"Series\": [{\"queryRef\": \"dim_inverter.inverter_name\"}], \"Y\": [{\"queryRef\": \"Medidas.SoC Promedio (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t\", \"Entity\": \"dim_time\", \"Type\": 0}, {\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t\"}}, \"Property\": \"hour\"}, \"Name\": \"dim_time.hour\", \"NativeReferenceName\": \"hour\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"SoC Promedio (%)\"}, \"Name\": \"Medidas.SoC Promedio (%)\", \"NativeReferenceName\": \"SoC Promedio (%)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 620,
+          "x": 20,
+          "y": 135,
+          "z": 19.0
+        },
+        {
+          "config": "{\"name\": \"edf1b6eafff5782afe6b\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 650, \"y\": 135, \"z\": 20, \"width\": 610, \"height\": 280, \"tabOrder\": 20}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.calendar_date\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.SoC Mínimo (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"calendar_date\"}, \"Name\": \"dim_date.calendar_date\", \"NativeReferenceName\": \"calendar_date\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"SoC Mínimo (%)\"}, \"Name\": \"Medidas.SoC Mínimo (%)\", \"NativeReferenceName\": \"SoC Mínimo (%)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 610,
+          "x": 650,
+          "y": 135,
+          "z": 20.0
+        },
+        {
+          "config": "{\"name\": \"fa97fcbad167f5a9ca5f\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 430, \"z\": 21, \"width\": 620, \"height\": 280, \"tabOrder\": 21}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Episodios de Red Ausente\"}, {\"queryRef\": \"Medidas.Episodios de Batería Baja\"}, {\"queryRef\": \"Medidas.Huecos de Datos\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year_month\"}, \"Name\": \"dim_date.year_month\", \"NativeReferenceName\": \"year_month\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Episodios de Red Ausente\"}, \"Name\": \"Medidas.Episodios de Red Ausente\", \"NativeReferenceName\": \"Episodios de Red Ausente\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Episodios de Batería Baja\"}, \"Name\": \"Medidas.Episodios de Batería Baja\", \"NativeReferenceName\": \"Episodios de Batería Baja\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Huecos de Datos\"}, \"Name\": \"Medidas.Huecos de Datos\", \"NativeReferenceName\": \"Huecos de Datos\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 620,
+          "x": 20,
+          "y": 430,
+          "z": 21.0
+        },
+        {
+          "config": "{\"name\": \"8f4e4041f5ee8bae8e66\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 650, \"y\": 430, \"z\": 22, \"width\": 610, \"height\": 280, \"tabOrder\": 22}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_time.hour\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Energía Solar (kWh)\"}, {\"queryRef\": \"Medidas.Energía Red Importada (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"t\", \"Entity\": \"dim_time\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"t\"}}, \"Property\": \"hour\"}, \"Name\": \"dim_time.hour\", \"NativeReferenceName\": \"hour\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Solar (kWh)\"}, \"Name\": \"Medidas.Energía Solar (kWh)\", \"NativeReferenceName\": \"Energía Solar (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Red Importada (kWh)\"}, \"Name\": \"Medidas.Energía Red Importada (kWh)\", \"NativeReferenceName\": \"Energía Red Importada (kWh)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 610,
+          "x": 650,
+          "y": 430,
+          "z": 22.0
+        }
+      ],
+      "width": 1280.0
+    },
+    {
+      "config": "{}",
+      "displayName": "Calidad de datos",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.0,
+      "name": "7dabc4a334bfc6cd75e9",
+      "ordinal": 3,
+      "visualContainers": [
+        {
+          "config": "{\"name\": \"ced67f45b096d3801b73\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 8, \"z\": 0, \"width\": 1000, \"height\": 34, \"tabOrder\": 0}}], \"singleVisual\": {\"visualType\": \"pageNavigator\", \"drillFilterOtherVisuals\": true}}",
+          "filters": "[]",
+          "height": 34,
+          "width": 1000,
+          "x": 20,
+          "y": 8,
+          "z": 0.0
+        },
+        {
+          "config": "{\"name\": \"b2c5807c7e30a598d0db\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 50, \"z\": 10, \"width\": 130, \"height\": 60, \"tabOrder\": 10}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_date.year\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year\"}, \"Name\": \"dim_date.year\", \"NativeReferenceName\": \"year\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 130,
+          "x": 20,
+          "y": 50,
+          "z": 10.0
+        },
+        {
+          "config": "{\"name\": \"e26bce0d8d877a98b9ac\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 160, \"y\": 50, \"z\": 11, \"width\": 150, \"height\": 60, \"tabOrder\": 11}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_date.month_name\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"month_name\"}, \"Name\": \"dim_date.month_name\", \"NativeReferenceName\": \"month_name\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 150,
+          "x": 160,
+          "y": 50,
+          "z": 11.0
+        },
+        {
+          "config": "{\"name\": \"33d96edd77d866e61127\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 320, \"y\": 50, \"z\": 12, \"width\": 170, \"height\": 60, \"tabOrder\": 12}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"dim_inverter.inverter_name\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 170,
+          "x": 320,
+          "y": 50,
+          "z": 12.0
+        },
+        {
+          "config": "{\"name\": \"44dfd4f398ee4b5c1a95\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 500, \"y\": 50, \"z\": 13, \"width\": 118, \"height\": 70, \"tabOrder\": 13}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Lecturas Recibidas\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Lecturas Recibidas\"}, \"Name\": \"Medidas.Lecturas Recibidas\", \"NativeReferenceName\": \"Lecturas Recibidas\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 500,
+          "y": 50,
+          "z": 13.0
+        },
+        {
+          "config": "{\"name\": \"265c0879d955025ff87c\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 624, \"y\": 50, \"z\": 14, \"width\": 118, \"height\": 70, \"tabOrder\": 14}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Lecturas Válidas\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Lecturas Válidas\"}, \"Name\": \"Medidas.Lecturas Válidas\", \"NativeReferenceName\": \"Lecturas Válidas\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 624,
+          "y": 50,
+          "z": 14.0
+        },
+        {
+          "config": "{\"name\": \"98e6e1cd7be8a7d83351\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 748, \"y\": 50, \"z\": 15, \"width\": 118, \"height\": 70, \"tabOrder\": 15}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Lecturas Vacías\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Lecturas Vacías\"}, \"Name\": \"Medidas.Lecturas Vacías\", \"NativeReferenceName\": \"Lecturas Vacías\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 748,
+          "y": 50,
+          "z": 15.0
+        },
+        {
+          "config": "{\"name\": \"cdb5754e64f4f5ee8c72\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 872, \"y\": 50, \"z\": 16, \"width\": 118, \"height\": 70, \"tabOrder\": 16}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Datos Válidos (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Datos Válidos (%)\"}, \"Name\": \"Medidas.Datos Válidos (%)\", \"NativeReferenceName\": \"Datos Válidos (%)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 872,
+          "y": 50,
+          "z": 16.0
+        },
+        {
+          "config": "{\"name\": \"7d51ed4d19b885dc0a68\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 996, \"y\": 50, \"z\": 17, \"width\": 118, \"height\": 70, \"tabOrder\": 17}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Disponibilidad del Registro (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Disponibilidad del Registro (%)\"}, \"Name\": \"Medidas.Disponibilidad del Registro (%)\", \"NativeReferenceName\": \"Disponibilidad del Registro (%)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 996,
+          "y": 50,
+          "z": 17.0
+        },
+        {
+          "config": "{\"name\": \"3328ebe80fa95c24c1ae\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1120, \"y\": 50, \"z\": 18, \"width\": 118, \"height\": 70, \"tabOrder\": 18}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Huecos sobre el Límite\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Huecos sobre el Límite\"}, \"Name\": \"Medidas.Huecos sobre el Límite\", \"NativeReferenceName\": \"Huecos sobre el Límite\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 1120,
+          "y": 50,
+          "z": 18.0
+        },
+        {
+          "config": "{\"name\": \"7c4eb1515fff42969a50\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 135, \"z\": 19, \"width\": 620, \"height\": 280, \"tabOrder\": 19}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month\", \"active\": true}], \"Series\": [{\"queryRef\": \"dim_inverter.inverter_name\"}], \"Y\": [{\"queryRef\": \"Medidas.Disponibilidad del Registro (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year_month\"}, \"Name\": \"dim_date.year_month\", \"NativeReferenceName\": \"year_month\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Disponibilidad del Registro (%)\"}, \"Name\": \"Medidas.Disponibilidad del Registro (%)\", \"NativeReferenceName\": \"Disponibilidad del Registro (%)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 620,
+          "x": 20,
+          "y": 135,
+          "z": 19.0
+        },
+        {
+          "config": "{\"name\": \"c44682e261237776c655\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 650, \"y\": 135, \"z\": 20, \"width\": 610, \"height\": 280, \"tabOrder\": 20}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.calendar_date\", \"active\": true}], \"Series\": [{\"queryRef\": \"dim_inverter.inverter_name\"}], \"Y\": [{\"queryRef\": \"Medidas.Disponibilidad del Registro (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"calendar_date\"}, \"Name\": \"dim_date.calendar_date\", \"NativeReferenceName\": \"calendar_date\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Disponibilidad del Registro (%)\"}, \"Name\": \"Medidas.Disponibilidad del Registro (%)\", \"NativeReferenceName\": \"Disponibilidad del Registro (%)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 610,
+          "x": 650,
+          "y": 135,
+          "z": 20.0
+        },
+        {
+          "config": "{\"name\": \"ccbf8c53765f4ec0a954\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 430, \"z\": 21, \"width\": 1240, \"height\": 280, \"tabOrder\": 21}}], \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"dim_date.year_month\", \"active\": true}], \"Columns\": [{\"queryRef\": \"dim_inverter.inverter_name\", \"active\": true}], \"Values\": [{\"queryRef\": \"Medidas.Lecturas Recibidas\"}, {\"queryRef\": \"Medidas.Lecturas Vacías\"}, {\"queryRef\": \"Medidas.Huecos sobre el Límite\"}, {\"queryRef\": \"Medidas.Disponibilidad del Registro (%)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"i\", \"Entity\": \"dim_inverter\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year_month\"}, \"Name\": \"dim_date.year_month\", \"NativeReferenceName\": \"year_month\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"i\"}}, \"Property\": \"inverter_name\"}, \"Name\": \"dim_inverter.inverter_name\", \"NativeReferenceName\": \"inverter_name\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Lecturas Recibidas\"}, \"Name\": \"Medidas.Lecturas Recibidas\", \"NativeReferenceName\": \"Lecturas Recibidas\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Lecturas Vacías\"}, \"Name\": \"Medidas.Lecturas Vacías\", \"NativeReferenceName\": \"Lecturas Vacías\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Huecos sobre el Límite\"}, \"Name\": \"Medidas.Huecos sobre el Límite\", \"NativeReferenceName\": \"Huecos sobre el Límite\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Disponibilidad del Registro (%)\"}, \"Name\": \"Medidas.Disponibilidad del Registro (%)\", \"NativeReferenceName\": \"Disponibilidad del Registro (%)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 1240,
+          "x": 20,
+          "y": 430,
+          "z": 21.0
+        }
+      ],
+      "width": 1280.0
+    },
+    {
+      "config": "{}",
+      "displayName": "Escenarios",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.0,
+      "name": "9626c5e818fac0433cbd",
+      "ordinal": 4,
+      "visualContainers": [
+        {
+          "config": "{\"name\": \"db4cbf5f85e231d06d9c\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 8, \"z\": 0, \"width\": 1000, \"height\": 34, \"tabOrder\": 0}}], \"singleVisual\": {\"visualType\": \"pageNavigator\", \"drillFilterOtherVisuals\": true}}",
+          "filters": "[]",
+          "height": 34,
+          "width": 1000,
+          "x": 20,
+          "y": 8,
+          "z": 0.0
+        },
+        {
+          "config": "{\"name\": \"a9f58ece78b06f29a9f1\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 50, \"z\": 10, \"width\": 200, \"height\": 60, \"tabOrder\": 10}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Tarifa.Tarifa COP/kWh\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"a\", \"Entity\": \"Tarifa\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"a\"}}, \"Property\": \"Tarifa COP/kWh\"}, \"Name\": \"Tarifa.Tarifa COP/kWh\", \"NativeReferenceName\": \"Tarifa COP/kWh\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 200,
+          "x": 20,
+          "y": 50,
+          "z": 10.0
+        },
+        {
+          "config": "{\"name\": \"d4d6089b5123e842997d\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 230, \"y\": 50, \"z\": 11, \"width\": 200, \"height\": 60, \"tabOrder\": 11}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Factor CO2.Factor g/kWh\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"f\", \"Entity\": \"Factor CO2\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"f\"}}, \"Property\": \"Factor g/kWh\"}, \"Name\": \"Factor CO2.Factor g/kWh\", \"NativeReferenceName\": \"Factor g/kWh\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 200,
+          "x": 230,
+          "y": 50,
+          "z": 11.0
+        },
+        {
+          "config": "{\"name\": \"7528511070a74a41f8e4\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 440, \"y\": 50, \"z\": 12, \"width\": 200, \"height\": 60, \"tabOrder\": 12}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"Capacidad FV.Aumento %\", \"active\": true}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"c\", \"Entity\": \"Capacidad FV\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"c\"}}, \"Property\": \"Aumento %\"}, \"Name\": \"Capacidad FV.Aumento %\", \"NativeReferenceName\": \"Aumento %\"}]}, \"objects\": {\"data\": [{\"properties\": {\"mode\": {\"expr\": {\"Literal\": {\"Value\": \"'Dropdown'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 60,
+          "width": 200,
+          "x": 440,
+          "y": 50,
+          "z": 12.0
+        },
+        {
+          "config": "{\"name\": \"192fcfd8c364eab42bd6\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 660, \"y\": 50, \"z\": 13, \"width\": 118, \"height\": 70, \"tabOrder\": 13}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Ahorro Solar (COP)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Ahorro Solar (COP)\"}, \"Name\": \"Medidas.Ahorro Solar (COP)\", \"NativeReferenceName\": \"Ahorro Solar (COP)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 660,
+          "y": 50,
+          "z": 13.0
+        },
+        {
+          "config": "{\"name\": \"b76db07822db703e53cf\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 782, \"y\": 50, \"z\": 14, \"width\": 118, \"height\": 70, \"tabOrder\": 14}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Costo Red (COP)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Costo Red (COP)\"}, \"Name\": \"Medidas.Costo Red (COP)\", \"NativeReferenceName\": \"Costo Red (COP)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 782,
+          "y": 50,
+          "z": 14.0
+        },
+        {
+          "config": "{\"name\": \"83e2f6540600c8fb4456\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 904, \"y\": 50, \"z\": 15, \"width\": 118, \"height\": 70, \"tabOrder\": 15}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.CO2 Evitado (t)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"CO2 Evitado (t)\"}, \"Name\": \"Medidas.CO2 Evitado (t)\", \"NativeReferenceName\": \"CO2 Evitado (t)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 904,
+          "y": 50,
+          "z": 15.0
+        },
+        {
+          "config": "{\"name\": \"ec0673f29c6a4242c225\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1026, \"y\": 50, \"z\": 16, \"width\": 118, \"height\": 70, \"tabOrder\": 16}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.Ahorro Adicional por Capacidad (COP)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Ahorro Adicional por Capacidad (COP)\"}, \"Name\": \"Medidas.Ahorro Adicional por Capacidad (COP)\", \"NativeReferenceName\": \"Ahorro Adicional por Capacidad (COP)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 1026,
+          "y": 50,
+          "z": 16.0
+        },
+        {
+          "config": "{\"name\": \"f79e2edc49c1f71bd135\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1148, \"y\": 50, \"z\": 17, \"width\": 118, \"height\": 70, \"tabOrder\": 17}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"Medidas.CO2 Adicional por Capacidad (kg)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"CO2 Adicional por Capacidad (kg)\"}, \"Name\": \"Medidas.CO2 Adicional por Capacidad (kg)\", \"NativeReferenceName\": \"CO2 Adicional por Capacidad (kg)\"}]}, \"objects\": {\"labels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"18D\"}}}, \"labelDisplayUnits\": {\"expr\": {\"Literal\": {\"Value\": \"1D\"}}}}}], \"categoryLabels\": [{\"properties\": {\"fontSize\": {\"expr\": {\"Literal\": {\"Value\": \"9D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 70,
+          "width": 118,
+          "x": 1148,
+          "y": 50,
+          "z": 17.0
+        },
+        {
+          "config": "{\"name\": \"ba5cd7aa22086cffb0f0\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 135, \"z\": 18, \"width\": 620, \"height\": 280, \"tabOrder\": 18}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Ahorro Solar (COP)\"}, {\"queryRef\": \"Medidas.Costo Red (COP)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year_month\"}, \"Name\": \"dim_date.year_month\", \"NativeReferenceName\": \"year_month\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Ahorro Solar (COP)\"}, \"Name\": \"Medidas.Ahorro Solar (COP)\", \"NativeReferenceName\": \"Ahorro Solar (COP)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Costo Red (COP)\"}, \"Name\": \"Medidas.Costo Red (COP)\", \"NativeReferenceName\": \"Costo Red (COP)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 620,
+          "x": 20,
+          "y": 135,
+          "z": 18.0
+        },
+        {
+          "config": "{\"name\": \"1075f0acdebe7aa95416\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 650, \"y\": 135, \"z\": 19, \"width\": 610, \"height\": 280, \"tabOrder\": 19}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.calendar_date\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Solar Acumulado del Periodo (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"calendar_date\"}, \"Name\": \"dim_date.calendar_date\", \"NativeReferenceName\": \"calendar_date\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Solar Acumulado del Periodo (kWh)\"}, \"Name\": \"Medidas.Solar Acumulado del Periodo (kWh)\", \"NativeReferenceName\": \"Solar Acumulado del Periodo (kWh)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 610,
+          "x": 650,
+          "y": 135,
+          "z": 19.0
+        },
+        {
+          "config": "{\"name\": \"e73c44371ff3a60741f3\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 20, \"y\": 430, \"z\": 20, \"width\": 620, \"height\": 280, \"tabOrder\": 20}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.year_month\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Energía Solar (kWh)\"}, {\"queryRef\": \"Medidas.Solar con Más Capacidad (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"year_month\"}, \"Name\": \"dim_date.year_month\", \"NativeReferenceName\": \"year_month\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Energía Solar (kWh)\"}, \"Name\": \"Medidas.Energía Solar (kWh)\", \"NativeReferenceName\": \"Energía Solar (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Solar con Más Capacidad (kWh)\"}, \"Name\": \"Medidas.Solar con Más Capacidad (kWh)\", \"NativeReferenceName\": \"Solar con Más Capacidad (kWh)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 620,
+          "x": 20,
+          "y": 430,
+          "z": 20.0
+        },
+        {
+          "config": "{\"name\": \"18be5ec0c2607f9880a6\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 650, \"y\": 430, \"z\": 21, \"width\": 610, \"height\": 280, \"tabOrder\": 21}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"dim_date.calendar_date\", \"active\": true}], \"Y\": [{\"queryRef\": \"Medidas.Promedio Móvil 7 Días Solar (kWh)\"}, {\"queryRef\": \"Medidas.Solar Mes Anterior (kWh)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"d\", \"Entity\": \"dim_date\", \"Type\": 0}, {\"Name\": \"k\", \"Entity\": \"Medidas\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"d\"}}, \"Property\": \"calendar_date\"}, \"Name\": \"dim_date.calendar_date\", \"NativeReferenceName\": \"calendar_date\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Promedio Móvil 7 Días Solar (kWh)\"}, \"Name\": \"Medidas.Promedio Móvil 7 Días Solar (kWh)\", \"NativeReferenceName\": \"Promedio Móvil 7 Días Solar (kWh)\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"k\"}}, \"Property\": \"Solar Mes Anterior (kWh)\"}, \"Name\": \"Medidas.Solar Mes Anterior (kWh)\", \"NativeReferenceName\": \"Solar Mes Anterior (kWh)\"}]}}}",
+          "filters": "[]",
+          "height": 280,
+          "width": 610,
+          "x": 650,
+          "y": 430,
+          "z": 21.0
+        }
+      ],
+      "width": 1280.0
+    }
+  ]
+}

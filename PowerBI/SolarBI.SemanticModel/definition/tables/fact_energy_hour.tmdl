@@ -1,0 +1,163 @@
+table fact_energy_hour
+	lineageTag: 86f9fa21-1ebf-4deb-b1d0-2f517b67cfa6
+
+	column hour_local
+		dataType: dateTime
+		formatString: dd/mm/yyyy hh:mm
+		lineageTag: 4619e5db-cbf5-414c-8652-ab69cbee23b0
+		summarizeBy: none
+		sourceColumn: hour_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 36de6548-d90e-413a-9835-7aebd0ef5c36
+		isHidden
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 17d6af8f-f423-48be-8141-82233b38c237
+		isHidden
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column inverter_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5497db67-a54b-4b83-b440-cabee0ed4a62
+		isHidden
+		summarizeBy: none
+		sourceColumn: inverter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column solar_kwh
+		dataType: double
+		formatString: #,0.00
+		lineageTag: d563d56d-c887-417c-8b89-0fec6872d96b
+		summarizeBy: none
+		sourceColumn: solar_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+	column load_kwh
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 2eb52387-ab9f-4430-98ae-93fbd978673a
+		summarizeBy: none
+		sourceColumn: load_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+	column grid_import_kwh
+		dataType: double
+		formatString: #,0.00
+		lineageTag: d8b6dd5b-5a19-47d0-86f5-94cff6111cf2
+		summarizeBy: none
+		sourceColumn: grid_import_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+	column battery_discharge_kwh
+		dataType: double
+		formatString: #,0.00
+		lineageTag: afe987c1-8fdf-4614-9a09-1fd628215db0
+		summarizeBy: none
+		sourceColumn: battery_discharge_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+	column battery_charge_kwh
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 376f5364-89d3-4078-8ab3-9a0792845dae
+		summarizeBy: none
+		sourceColumn: battery_charge_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+	column co2_avoided_kg
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 47cd07f7-b74c-490a-9eeb-ba4e1c14df92
+		summarizeBy: none
+		sourceColumn: co2_avoided_kg
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_soc_pct
+		dataType: double
+		formatString: 0.0
+		lineageTag: bb20e1d5-916b-4b37-8051-ac7c8e48e488
+		summarizeBy: none
+		sourceColumn: avg_soc_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column min_soc_pct
+		dataType: double
+		formatString: 0.0
+		lineageTag: 9015b7c2-4b71-4794-91e0-b53936e53725
+		summarizeBy: none
+		sourceColumn: min_soc_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_pv_w
+		dataType: double
+		formatString: #,0
+		lineageTag: 21f34390-8e44-4800-ab99-436044a23f65
+		summarizeBy: none
+		sourceColumn: max_pv_w
+
+		annotation SummarizationSetBy = Automatic
+
+	column readings
+		dataType: int64
+		formatString: 0
+		lineageTag: 18afaf54-4382-4d47-8813-063719f900d3
+		summarizeBy: none
+		sourceColumn: readings
+
+		annotation SummarizationSetBy = Automatic
+
+	column covered_seconds
+		dataType: double
+		formatString: #,0
+		lineageTag: 1b252869-2bd8-4f21-afa1-2947f472bb69
+		summarizeBy: none
+		sourceColumn: covered_seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	column grid_present_ratio
+		dataType: double
+		formatString: 0.00
+		lineageTag: 5b336bc8-c255-4659-8f78-15f2af3e7dd9
+		summarizeBy: none
+		sourceColumn: grid_present_ratio
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_energy_hour = m
+		mode: import
+		source = ```
+			let
+			    Origen = PostgreSQL.Database(Servidor, BaseDeDatos),
+			    Tabla = Origen{[Schema = "gold", Item = "v_energy_hour"]}[Data],
+			    Columnas = Table.SelectColumns(Tabla, {"hour_local", "date_key", "time_key", "inverter_id", "solar_kwh", "load_kwh", "grid_import_kwh", "battery_discharge_kwh", "battery_charge_kwh", "co2_avoided_kg", "avg_soc_pct", "min_soc_pct", "max_pv_w", "readings", "covered_seconds", "grid_present_ratio"}),
+			    Tipos = Table.TransformColumnTypes(Columnas, {{"hour_local", type datetime}, {"date_key", Int64.Type}, {"time_key", Int64.Type}, {"inverter_id", Int64.Type}, {"solar_kwh", type number}, {"load_kwh", type number}, {"grid_import_kwh", type number}, {"battery_discharge_kwh", type number}, {"battery_charge_kwh", type number}, {"co2_avoided_kg", type number}, {"avg_soc_pct", type number}, {"min_soc_pct", type number}, {"max_pv_w", type number}, {"readings", Int64.Type}, {"covered_seconds", type number}, {"grid_present_ratio", type number}})
+			in
+			    Tipos
+			```
+
+	annotation PBI_ResultType = Table
