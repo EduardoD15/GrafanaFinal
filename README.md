@@ -2,7 +2,7 @@
 
 Taller 6 de Inteligencia de Negocios (Pascual Bravo). Solución de BI contenedorizada y orquestada con Kubernetes sobre los datos de la microrred OpenCEM. Enfoque: **emisiones de CO2 evitadas por la generación solar con el factor del SIN**.
 
-Integrantes: Samuel Vélez Guzmán, Tomás [apellidos], Eduardo [apellidos] y Kevin Patiño Duque.
+Integrantes: Samuel Vélez Guzmán, Tomás Restrepo Pulgarin, Eduardo Deossa Bohórquez y Kevin Patiño Duque.
 
 > El flujo de Grafana es sintético y está marcado como tal (`is_simulated`). El CO2 es una estimación sobre el canal PV1 con un factor oficial citado, no una reducción medida.
 
