@@ -47,16 +47,16 @@ spec:
                 secretKeyRef:
                   name: solarbi-secrets
                   key: GRAFANA_ADMIN_PASSWORD
-            - name: POSTGRES_USER
+            - name: BI_READER_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: solarbi-config
+                  key: BI_READER_USER
+            - name: BI_READER_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: solarbi-secrets
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: solarbi-secrets
-                  key: POSTGRES_PASSWORD
+                  key: BI_READER_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:

@@ -6,10 +6,17 @@ metadata:
 data:
   POSTGRES_DB: solarbi
   POSTGRES_USER: solarbi
-  CO2_FACTOR_KG_PER_KWH: "0.112"
-  TARIFF_COP_PER_KWH: "1000"
-  MAX_INTERVAL_SECONDS: "300"
+  BI_READER_USER: solarbi_reader
+  # factor del SIN para inventarios de GEI, ano 2024: 0.220 tCO2eq/MWh (Resolucion UPME 085 de 2026)
+  CO2_FACTOR_KG_PER_KWH: "0.220"
+  # tarifa de referencia, EPM estrato 3, factura de diciembre de 2025
+  TARIFF_COP_PER_KWH: "790.49"
+  MAX_INTERVAL_SECONDS: "900"
   SIMULATOR_INTERVAL_MS: "1000"
+  SIMULATOR_DAYLIGHT_OFFSET_HOURS: "8"
+  SITE_UTC_OFFSET_HOURS: "8"
+  ETL_START_DATE: ""
+  ETL_END_DATE: ""
   DATASET_ARCHIVE: /data/bronze/opencem-v1.0.0.sqlite.zst
   DATASET_SQLITE: /data/bronze/opencem-v1.0.0.sqlite
   REPORT_PATH: /reports/etl-report.json

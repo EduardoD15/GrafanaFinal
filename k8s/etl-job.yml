@@ -32,6 +32,11 @@ spec:
                 secretKeyRef:
                   name: solarbi-secrets
                   key: POSTGRES_PASSWORD
+            - name: BI_READER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: solarbi-secrets
+                  key: BI_READER_PASSWORD
             - name: DATABASE_URL
               value: postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)
           resources:

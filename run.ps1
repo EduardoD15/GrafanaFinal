@@ -2,28 +2,52 @@ param(
     [Parameter(Position = 0)]
     [ValidateSet("up", "down", "status", "logs", "clean", "k8s-up", "k8s-status", "k8s-down")]
     [string]$Action = "up",
-    [switch]$ForceEtl
+    [switch]$ForceEtl,
+    [switch]$Demo
 )
 
 $ErrorActionPreference = "Stop"
+# carga reducida para levantar todo en vivo: 14 dias de marzo de 2026 (cadencia de 12.6 s)
+$DemoStart = "2026-03-01"
+$DemoEnd = "2026-03-14"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $Root
+
+function New-RandomSecret {
+    $random = [Security.Cryptography.RandomNumberGenerator]::Create()
+    $bytes = New-Object byte[] 24
+    $random.GetBytes($bytes)
+    $random.Dispose()
+    return [Convert]::ToBase64String($bytes).TrimEnd("=").Replace("+", "A").Replace("/", "B")
+}
 
 function Ensure-EnvFile {
     if (-not (Test-Path ".env")) {
         $envText = Get-Content ".env.example" -Raw
-        $random = [Security.Cryptography.RandomNumberGenerator]::Create()
-        $pgBytes = New-Object byte[] 24
-        $grafanaBytes = New-Object byte[] 24
-        $random.GetBytes($pgBytes)
-        $random.GetBytes($grafanaBytes)
-        $random.Dispose()
-        $pgPassword = [Convert]::ToBase64String($pgBytes).TrimEnd("=").Replace("+", "A").Replace("/", "B")
-        $grafanaPassword = [Convert]::ToBase64String($grafanaBytes).TrimEnd("=").Replace("+", "C").Replace("/", "D")
-        $envText = $envText.Replace("CAMBIAR_POSTGRES_LOCAL", $pgPassword)
-        $envText = $envText.Replace("CAMBIAR_GRAFANA_LOCAL", $grafanaPassword)
+        foreach ($placeholder in @("CAMBIAR_POSTGRES_LOCAL", "CAMBIAR_GRAFANA_LOCAL", "CAMBIAR_LECTURA_LOCAL")) {
+            $envText = $envText.Replace($placeholder, (New-RandomSecret))
+        }
         Set-Content -Path ".env" -Value $envText -Encoding Ascii
         Write-Host "Se genero .env local con credenciales aleatorias; no lo comparta ni lo suba al repositorio."
+        return
+    }
+    # un .env anterior puede no tener las variables que se agregaron despues
+    $current = Get-Content ".env" -Raw
+    $added = $false
+    foreach ($line in (Get-Content ".env.example")) {
+        if ($line -match "^\s*([A-Z0-9_]+)=(.*)$") {
+            $key = $matches[1]
+            $value = $matches[2]
+            if ($current -notmatch "(?m)^$key=") {
+                if ($value -like "CAMBIAR_*") { $value = New-RandomSecret }
+                $current = $current.TrimEnd() + "`r`n$key=$value`r`n"
+                $added = $true
+            }
+        }
+    }
+    if ($added) {
+        Set-Content -Path ".env" -Value $current -Encoding Ascii
+        Write-Host "Se agregaron al .env las variables nuevas de .env.example."
     }
 }
 
@@ -51,13 +75,15 @@ function Ensure-KubernetesSecret {
     Get-Content ".env" | ForEach-Object {
         if ($_ -match "^\s*([^#=]+)=(.*)$") { $values[$matches[1]] = $matches[2] }
     }
-    $required = @("POSTGRES_USER", "POSTGRES_PASSWORD", "GRAFANA_ADMIN_USER", "GRAFANA_ADMIN_PASSWORD")
+    $required = @("POSTGRES_USER", "POSTGRES_PASSWORD", "BI_READER_USER", "BI_READER_PASSWORD", "GRAFANA_ADMIN_USER", "GRAFANA_ADMIN_PASSWORD")
     foreach ($key in $required) {
         if (-not $values.ContainsKey($key)) { throw "Falta $key en .env." }
     }
     & kubectl create secret generic solarbi-secrets -n solarbi `
         "--from-literal=POSTGRES_USER=$($values.POSTGRES_USER)" `
         "--from-literal=POSTGRES_PASSWORD=$($values.POSTGRES_PASSWORD)" `
+        "--from-literal=BI_READER_USER=$($values.BI_READER_USER)" `
+        "--from-literal=BI_READER_PASSWORD=$($values.BI_READER_PASSWORD)" `
         "--from-literal=GRAFANA_ADMIN_USER=$($values.GRAFANA_ADMIN_USER)" `
         "--from-literal=GRAFANA_ADMIN_PASSWORD=$($values.GRAFANA_ADMIN_PASSWORD)" `
         --dry-run=client -o yaml | & kubectl apply -f -
@@ -71,6 +97,11 @@ switch ($Action) {
         $archive = Join-Path $Root "data\bronze\opencem-v1.0.0.sqlite.zst"
         if (-not (Test-Path $archive)) {
             throw "No esta $archive. Copie alli el archivo descargado y vuelva a ejecutar .\run.ps1 up."
+        }
+        if ($Demo) {
+            $env:ETL_START_DATE = $DemoStart
+            $env:ETL_END_DATE = $DemoEnd
+            Write-Host "Modo demostracion: se cargan solo los dias $DemoStart a $DemoEnd."
         }
         Invoke-DockerCompose @("up", "--build")
     }
@@ -147,7 +178,18 @@ switch ($Action) {
         if ($LASTEXITCODE -ne 0) { throw "No se pudo construir la imagen solarbi-etl." }
         & kubectl apply -f ".\k8s\configmap.yml"
         if ($LASTEXITCODE -ne 0) { throw "No se pudo crear la configuracion." }
+        if ($Demo) {
+            $patchFile = Join-Path $env:TEMP "solarbi-demo-patch.json"
+            Set-Content -Path $patchFile -Value ('{"data":{"ETL_START_DATE":"' + $DemoStart + '","ETL_END_DATE":"' + $DemoEnd + '"}}') -Encoding Ascii
+            & kubectl patch configmap solarbi-config -n solarbi --type merge --patch-file $patchFile
+            if ($LASTEXITCODE -ne 0) { throw "No se pudo aplicar la ventana de demostracion." }
+            Write-Host "Modo demostracion: el ETL carga solo los dias $DemoStart a $DemoEnd."
+        }
         Ensure-KubernetesSecret
+        & kubectl create configmap postgres-schema -n solarbi `
+            "--from-file=schema.sql=.\sql\schema.sql" `
+            --dry-run=client -o yaml | & kubectl apply -f -
+        if ($LASTEXITCODE -ne 0) { throw "No se pudo crear el esquema para PostgreSQL." }
         & kubectl create configmap grafana-provisioning -n solarbi `
             "--from-file=datasource.yml=.\grafana\provisioning\datasources\datasource.yml" `
             "--from-file=dashboard.yml=.\grafana\provisioning\dashboards\dashboard.yml" `
